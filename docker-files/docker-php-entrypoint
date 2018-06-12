@@ -1,0 +1,95 @@
+#!/bin/sh
+set -e
+# Renew vault token
+consul-template -template "/opt/consul-template/local-config.ctmpl:/var/www/html/app/config/local.php" -once
+printf "\nSetEnv AWS_CONTAINER_CREDENTIALS_RELATIVE_URI $AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" >> /etc/apache2/apache2.conf
+php app/console mautic:assets:generate
+composer run-script post-update-cmd
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- apache2-foreground "$@"
+fi
+if [ ! -d "/var/www/html/app/cache/prod" ]; then 
+    mkdir -p /var/www/html/app/cache/prod
+fi
+if [ ! -d "/var/www/html/app/logs" ]; then 
+    mkdir -p /var/www/html/app/logs
+fi
+chmod -R 777 /var/www/html/app/cache
+chmod -R 777 /var/www/html/app/logs
+mkdir -p "/var/www/html/spool/$WCLIENT_ID"
+chmod -R 777 "/var/www/html/spool/$WCLIENT_ID"
+
+DBHOST=$(echo $PROVISIONVARS|jq -r .dbhost)
+DBNAME=$(echo $PROVISIONVARS|jq -r .dbname)
+DBUSER=$(echo $PROVISIONVARS|jq -r .dbuser)
+DBPASSWORD=$(echo $PROVISIONVARS|jq -r .dbpassword)
+
+ADMINFIRSTNAME=$(echo $PROVISIONVARS|jq -r .adminfirstname)
+ADMINLASTNAME=$(echo $PROVISIONVARS|jq -r .adminlastname)
+ADMINUSERNAME=$(echo $PROVISIONVARS|jq -r .adminusername)
+ADMINUSEREMAIL=$(echo $PROVISIONVARS|jq -r .adminuseremail)
+ADMINUSERPASSWORD=$(echo $PROVISIONVARS|jq -r .adminuserpassword)
+
+USERFIRSTNAME=$(echo $PROVISIONVARS|jq -r .userfirstname)
+USERLASTNAME=$(echo $PROVISIONVARS|jq -r .userlastname)
+USERNAME=$(echo $PROVISIONVARS|jq -r .username)
+USEREMAIL=$(echo $PROVISIONVARS|jq -r .useremail)
+USERPASSWORD=$(echo $PROVISIONVARS|jq -r .userpassword)
+
+OAUTH_CLIENT_ID=$(echo $PROVISIONVARS|jq -r .oauth_client_id)
+OAUTH_CLIENT_SECRET=$(echo $PROVISIONVARS|jq -r .oauth_client_secret)
+
+
+
+if [ "$MIGRATION" = "false" ]; then
+    echo "Starting DB Migration"
+    php app/console mautic:admin:dbmigration --db-host $DBHOST  --db-name $DBNAME --db-user $DBUSER --db-password $DBPASSWORD &
+fi
+wait
+rm -rf app/cache/prod/*
+
+if [ "$FIXTURE" = "false" ]; then
+    echo "Installing DB Fixtures"
+    php app/console mautic:admin:addfixture &
+fi
+wait
+rm -rf app/cache/prod/*
+
+if [ "$ADMINUSER" = "false" ]; then
+    echo "Inserting adminuser"
+    php app/console mautic:admin:insertadmin --first-name $ADMINFIRSTNAME --last-name $ADMINLASTNAME --user-name $ADMINUSERNAME --email $ADMINUSEREMAIL --password $ADMINUSERPASSWORD &
+fi
+wait
+rm -rf app/cache/prod/*
+
+if [ "$CLIENTUSER" = "false" ]; then
+    echo "Inserting clientuser"
+    php app/console mautic:admin:insertclientadmin --first-name $USERFIRSTNAME --last-name $USERLASTNAME --user-name $USERNAME --email $USEREMAIL --password $USERPASSWORD &
+fi
+wait
+rm -rf app/cache/prod/*
+
+if [ "$AUTHPLUGIN" = "false" ]; then
+    echo "Setting up oauth for wsuite"
+    php app/console mautic:admin:installwsuiteauth --db-host $DBHOST  --db-name $DBNAME --db-user $DBUSER --db-password $DBPASSWORD --oauth-id $OAUTH_CLIENT_ID --oauth-secret $OAUTH_CLIENT_SECRET &
+fi
+wait
+rm -rf app/cache/prod/*
+
+#echo "Starting cron container"
+#php app/console mautic:admin:startcron --domain "$WDOMAIN" --clientid "$WCLIENT_ID" &
+#wait
+#rm -rf app/cache/prod/*
+
+echo "Starting cron"
+cron -f -L 15 &
+CRONPID=$!
+
+if [ ! -e "/var/www/html/cron.pid" ] ; then
+    touch "/var/www/html/cron.pid"
+fi
+echo "$CRONPID" > "/var/www/html/cron.pid"
+
+/bin/bash setpermission.sh
+exec "$@"

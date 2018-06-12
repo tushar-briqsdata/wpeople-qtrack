@@ -1,0 +1,18 @@
+#deduplicate {
+#  enabled = true
+#  prefix = "consultemplate/wsuite-cache/"
+#}
+
+template {
+  source = "/opt/consul-template/consul.sh.ctmpl"
+  destination = "/opt/consul-template/consul.sh"
+  command = "/bin/bash /opt/consul-template/consul.sh"
+  command_timeout = "600s"
+}
+
+template {
+  source = "/opt/consul-template/service.sh.ctmpl"
+  destination = "/opt/consul-template/service.sh"
+  command = "/bin/bash /opt/consul-template/service.sh"
+  command_timeout = "600s"
+}

@@ -1,0 +1,134 @@
+//
+// Dropdown menus
+// --------------------------------------------------
+
+// Dropdown arrow/caret
+.caret {
+  margin-top: -1px;
+}
+
+// The dropdown menu (ul)
+.dropdown-menu {
+  .box-shadow(none) !important;
+  padding: 0 !important;
+  border-radius: 0;
+  border-color:#d4d4d4 !important;
+  background-color:#f0f0f0 !important;
+
+  // Dividers (basically an hr) within the dropdown
+  .divider {
+    margin: 5px 0;
+
+  }
+
+  // reset panel style
+  .panel {
+    .box-shadow(none);
+    border-radius: 0;
+    border-width: 0;
+    margin-bottom: 0;
+    margin-top: -5px;
+    margin-bottom: -5px;
+
+    .panel-heading {
+      border-radius: 0;
+    }
+  }
+
+  // Links within the dropdown menu
+  > li{ 
+    position: relative;
+    padding:0;
+    color:#868686;
+    &.dropdown-header{
+      padding-left:15px;
+      padding-right:15px;
+    }
+    > a {
+      position: relative;
+      z-index: 1;
+      padding: 9px 15px;
+      line-height: 30px;
+      color:#868686;
+      border-top: 1px solid #d8d8d8;
+      font-weight: 600;
+      border-bottom: none;
+      &:hover,
+      &:focus {
+          background-color: @white;
+          color:#404040 !important;
+      }
+      .fa {
+        min-width: 15px;
+        display:none !important;
+      }
+      &:before {
+        content: "";
+        position: absolute;
+        z-index: 9;
+        width: 3px;
+        background: @dropdown-menu-leftbar;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        opacity: 0;
+      }
+      &:first-child{
+        border: 0;
+      }
+    }
+    /*&:hover,
+    &:focus {
+        background-color: @white;
+        color:#404040 !important;
+    }*/
+    
+    &:hover,
+    &.active{
+      >a{
+        &:before {
+            opacity: 1;
+        }
+      }
+    }
+    &.active {
+          /*background-color: @white;
+          color:#404040 !important;*/
+        >a{
+          background-color: @white;
+          color:#404040 !important;
+        }
+    }
+  }
+}
+
+// Hover/Focus state
+.dropdown-menu > li > a {
+  &:hover,
+  &:focus {
+    z-index: 2;
+    border-color: darken(@dropdown-link-hover-bg, 0.7%);
+  }
+}
+
+// Active state
+.dropdown-menu > .active > a {
+  &,
+  &:hover,
+  &:focus {
+    color: @nav-tabs-active-link-hover-color;
+    background-color: @nav-link-hover-bg;
+  }
+}
+
+.scrollable-menu {
+  height: auto;
+  max-height: 200px;
+  overflow-x: hidden;
+}
+
+ul.dropdown-menu-form {
+  padding: 0 5px 0 30px;
+  max-height: 300px;
+  overflow-y: auto;
+}

@@ -1,0 +1,31 @@
+#for your build environment.
+image: qdata/qciagent:master-php7
+
+pipelines:
+    branches: #The branch section is a container for all branch-specific pipelines
+        master:
+            - step:
+                caches:
+                    - composer
+                    - node
+                    - pip
+                script:
+                    - pip install boto3
+                    - chmod +x ./deploy/*
+                    - npm install
+                    - grunt
+                    - grunt less
+                    - composer install
+                    #- cp -f Driver.php vendor/doctrine/dbal/lib/Doctrine/DBAL/Driver/PDOMySql/Driver.php
+                    - /bin/bash deploy/pull_ecr_image.sh
+                    - docker build -t $ECS_IMAGE .
+                    - /bin/bash deploy/push_ecr_image.sh
+                    - /bin/bash deploy/update-service.sh
+                    
+    default:
+        - step:
+            script:
+                - echo "Running on the default job"
+
+options:
+  docker: true

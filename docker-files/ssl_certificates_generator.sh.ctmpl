@@ -1,0 +1,51 @@
+#!/bin/bash
+{{ if tree "wpeople/domains" }}domains=({{ range $domain, $pairs := tree "wpeople/domains" | byKey}}{{ with $ssl_enabled := printf "wpeople/domains/%s/conf/ssl" $domain }}{{ $ssl_enabled := key_or_default $ssl_enabled "false" }}{{ if eq $ssl_enabled "true" }} {{$domain}}{{end}}{{end}}{{end}} ){{end}}
+
+if [ ${#domains[@]} -ne 0 ]; then
+mkdir -p /etc/ssl/certs /etc/ssl/private /etc/ssl/chain
+for i in ${domains[@]}
+do
+domain_crt_path="secret/ssl/"$i".cert"
+domain_crt_output="/etc/ssl/certs/"$i".crt"
+domain_key_path="secret/ssl/"$i".key"
+domain_key_output="/etc/ssl/private/"$i".key"
+domain_chain_path="secret/ssl/"$i".chain"
+domain_chain_output="/etc/ssl/chain/"$i".crt"
+
+crt_filename=$(mktemp)
+http_response=$(curl --silent --fail --connect-timeout 3 -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/${domain_crt_path} -o $crt_filename --write-out '%{http_code}')
+
+if [[ "$http_response" = "200" ]]; then
+  eval $(cat $crt_filename | jq --raw-output .data.value > $domain_crt_output )
+elif [[ "$http_response" = "404" ]]; then
+  echo "Warning: No secrets found for $domain_crt_path in vault."
+else
+  echo "Fatal: Error connecting to vault! Check $crt_filename for more details."
+  exit 1
+fi
+
+key_filename=$(mktemp)
+http_response=$(curl --silent --fail --connect-timeout 3 -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/${domain_key_path} -o $key_filename --write-out '%{http_code}')
+if [[ "$http_response" = "200" ]]; then
+  eval $(cat $key_filename | jq --raw-output .data.value > $domain_key_output )
+elif [[ "$http_response" = "404" ]]; then
+  echo "Warning: No secrets found for $domain_crt_path in vault."
+else
+  echo "Fatal: Error connecting to vault! Check $key_filename for more details."
+  exit 1
+fi
+
+chain_filename=$(mktemp)
+http_response=$(curl --silent --fail --connect-timeout 3 -H "X-Vault-Token: ${VAULT_TOKEN}" -X GET ${VAULT_ADDR}/v1/${domain_chain_path} -o $chain_filename --write-out '%{http_code}')
+if [[ "$http_response" = "200" ]]; then
+  eval $(cat $chain_filename | jq --raw-output .data.value > $domain_chain_output )
+elif [[ "$http_response" = "404" ]]; then
+  echo "Warning: No secrets found for $domain_crt_path in vault."
+else
+  echo "Fatal: Error connecting to vault! Check $chain_filename for more details."
+  exit 1
+fi
+
+rm -f $crt_filename && rm $key_filename && rm $chain_filename
+done
+fi

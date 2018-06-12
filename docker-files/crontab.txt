@@ -1,0 +1,6 @@
+0-59/15 * * * * /usr/local/bin/php /var/www/html/app/console mautic:segments:update > /proc/1/fd/1  2>&1
+5-59/15 * * * * /usr/local/bin/php /var/www/html/app/console mautic:campaigns:update > /proc/1/fd/1  2>&1
+10-59/15 * * * * /usr/local/bin/php /var/www/html/app/console mautic:campaigns:trigger > /proc/1/fd/1  2>&1
+* * * * * /usr/local/bin/php /var/www/html/app/console mautic:emails:send > /proc/1/fd/1  2>&1
+* * * * * echo "Hello World" > /proc/1/fd/1  2>&1
+

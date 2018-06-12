@@ -1,0 +1,11 @@
+#!/bin/sh
+
+{{with $domain := env "WDOMAIN"}}
+    {{with $client_id := env "WCLIENT_ID"}}
+    {{$keypath := printf "wpeople/domains/%s/clients/%s/service_last_update" $domain $client_id}}
+export service_last_update={{ key_or_default $keypath "1491993218" }}
+consul-template -template "/opt/consul-template/local-config.ctmpl:/var/www/html/app/config/local.php" -once
+service supervisor restart
+echo "consul-worker"
+    {{end}}
+{{end}}

@@ -1,0 +1,10 @@
+#!/bin/sh
+export service_last_update={{ key_or_default "services/service_last_update" "1491993218" }}
+consul-template -template "/opt/consul-template/local-config.ctmpl:/var/www/html/app/config/local.php" -once
+consul-template -template "/opt/consul-template/ssl_certificates_generator.sh.ctmpl:/opt/consul-template/ssl_certificates_generator.sh" -once
+consul-template -template "/opt/consul-template/vsites.ctmpl:/etc/apache2/sites-enabled/vsites.conf" -once
+
+chmod +x /opt/consul-template/ssl_certificates_generator.sh
+/bin/bash /opt/consul-template/ssl_certificates_generator.sh
+
+/bin/bash /usr/bin/apache_service.sh

@@ -1,0 +1,40 @@
+{{with $domain := env "WDOMAIN"}}
+    {{with $client_id := env "WCLIENT_ID"}}
+    {{with $ssl_enabled := printf "wpeople/domains/%s/conf/ssl" $domain}}
+        {{$ssl_enabled := key_or_default $ssl_enabled "false"}}
+        {{with $subdomains := printf "wpeople/domains/%s/subdomains" $domain}}
+            {{range $subdomain, $pairs := tree $subdomains | byKey}}
+<VirtualHost *:80>
+    ServerName {{$subdomain}}
+    ServerAdmin admin@{{$subdomain}}
+    DocumentRoot /var/www/html
+    Alias /{{$client_id}} /var/www/html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    # CustomLog ${APACHE_LOG_DIR}/access.log combined
+    CustomLog ${APACHE_LOG_DIR}/access.log combined env=!dontlog 
+</VirtualHost>
+                {{ if eq $ssl_enabled "true" }}
+<VirtualHost *:443>
+    ServerName {{$subdomain}}
+    ServerAdmin admin@{{$subdomain}}
+    DocumentRoot /var/www/html
+    Alias /{{$client_id}} /var/www/html
+    # ----------------- #
+    # SSL Configuration #
+    # ----------------- #
+    SSLEngine on
+    SSLCertificateFile /etc/ssl/certs/{{$domain}}.crt
+    SSLCertificateKeyFile /etc/ssl/private/{{$domain}}.key
+    SSLCertificateChainFile /etc/ssl/chain/{{$domain}}.crt
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    # CustomLog ${APACHE_LOG_DIR}/access.log combined
+    CustomLog ${APACHE_LOG_DIR}/access.log combined env=!dontlog 
+
+</VirtualHost>
+                {{end}}
+            {{end}}
+        {{end}}
+    {{end}}
+    {{end}}
+{{end}}

@@ -1,0 +1,21 @@
+#!/bin/sh
+set -e
+# Renew vault token
+printf "\nSetEnv AWS_CONTAINER_CREDENTIALS_RELATIVE_URI $AWS_CONTAINER_CREDENTIALS_RELATIVE_URI" >> /etc/apache2/apache2.conf
+
+if [ ! -d "/var/www/html/app/cache/prod" ]; then 
+    mkdir -p /var/www/html/app/cache/prod
+fi
+if [ ! -d "/var/www/html/app/logs" ]; then 
+    mkdir -p /var/www/html/app/logs
+fi
+chmod -R 777 /var/www/html/app/cache
+chmod -R 777 /var/www/html/app/logs
+if [ ! -d "/var/www/html/spool/$WCLIENT_ID" ]; then 
+	mkdir -p "/var/www/html/spool/$WCLIENT_ID"
+fi
+chmod -R 777 "/var/www/html/spool/$WCLIENT_ID"
+/bin/bash setpermission.sh &
+
+
+exec "$@"
