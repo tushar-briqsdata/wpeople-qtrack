@@ -60,7 +60,6 @@ if (!empty($fields['core']['email']['value'])) {
             ),
         ],
         'btnText'   => $view['translator']->trans('mautic.lead.email.send_email'),
-        'iconClass' => 'fa fa-send',
         'primary'   => true,
     ];
 }

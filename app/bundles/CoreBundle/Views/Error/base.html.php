@@ -33,7 +33,7 @@ $message = $view['slots']->get('message', 'mautic.core.error.generic');
         <?php else: ?>
 
         <div class="mautibot-image col-xs-4 col-md-3">
-            <img class="img-responsive" src="<?php echo $src; ?>" />
+            <!-- <img class="img-responsive" src="<?php echo $src; ?>" /> -->
         </div>
         <div class="mautibot-content col-xs-8 col-md-9">
             <blockquote class="np break-word">

@@ -122,7 +122,7 @@ if ($permissions['lead:leads:editown'] || $permissions['lead:leads:editother']) 
                     'sessionVar' => 'lead',
                     'orderBy'    => 'l.points',
                     'text'       => 'mautic.lead.points',
-                    'class'      => 'visible-md visible-lg col-lead-points',
+                    'class'      => 'visible-md visible-lg col-lead-points text-center',
                 ]);
 
                 echo $view->render('MauticCoreBundle:Helper:tableheader.html.php', [

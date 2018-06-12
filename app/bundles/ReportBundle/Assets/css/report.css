@@ -21,7 +21,7 @@
 	width: 100% !important;
 }
 #ms-report_groupBy ul{
-	height: 115px;
+	max-height: 115px;
 }
 
 #report_filters .panel {

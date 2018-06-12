@@ -40,7 +40,7 @@
         <?php endforeach; ?>
     </ul>
 <?php else: ?>
-        <div class="alert alert-warning" role="alert">
+        <div class="alert alert-info" role="alert">
             <?php echo $view['translator']->trans('mautic.note.no.upcoming.emails'); ?>
         </div>
 <?php endif; ?>

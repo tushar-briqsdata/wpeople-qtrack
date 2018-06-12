@@ -52,7 +52,8 @@
     .sidebar-footer {
       .transition(width .3s ease);
       width: @sidebar-left-width;
-      background-color: @sidebar-left-header-bg;
+      background-color: #292929;
+      
     }
 
     .sidebar-header {
@@ -159,7 +160,7 @@
   // sidebar content
   .sidebar-content {
     position: absolute;
-    top: 0;
+    top: @sidebar-left-collapse-width;
     bottom: 0;
     width: 100%;
 
@@ -248,7 +249,7 @@
               }
             }
             .icon {
-              color: @brand-warning;
+              color: @white;
             }
           }
         }
@@ -287,7 +288,7 @@
             &.active {
               // the dot
               &:after {
-                background-color: @brand-warning !important;
+                background-color: @white !important;
               }
             }
 
@@ -343,7 +344,7 @@
 
       // reset app-header
       ~ #app-header.navbar {
-        left: @sidebar-left-width;
+        padding-left: @sidebar-left-width;
       }
       // reset app-content
       ~ #app-content {
@@ -370,7 +371,7 @@
 
         // reset `nav-sidebar` style
         .nav-sidebar {
-          margin-top: 10px;
+          margin-top: 0;
           > .nav > li {
             > a {
               padding-top: 12px;
@@ -457,3 +458,4 @@
     }
   }
 }
+.

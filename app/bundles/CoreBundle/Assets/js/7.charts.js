@@ -297,14 +297,14 @@ Mautic.renderMap = function(wrapper) {
             },
             regionStyle: {
                 initial: {
-                    "fill": '#dce0e5',
-                    "fill-opacity": 1,
+                    "fill": '#41a3f3',
+                    "fill-opacity": 0.7,
                     "stroke": 'none',
                     "stroke-width": 0,
                     "stroke-opacity": 1
                 },
                 hover: {
-                    "fill-opacity": 0.7,
+                    "fill-opacity": 1,
                     "cursor": 'pointer'
                 }
             },
@@ -312,7 +312,7 @@ Mautic.renderMap = function(wrapper) {
             series: {
                 regions: [{
                     values: regionsData,
-                    scale: ['#dce0e5', '#40C7B5'],
+                    scale: ['#41a3f3', '#145a91'],
                     normalizeFunction: 'polynomial'
                 }]
             },

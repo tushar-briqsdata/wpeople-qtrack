@@ -51,21 +51,14 @@
   > li {
     > a {
       line-height: 20px;
+      border-radius: 10px 10px 0 0;
+      border-color: #ebedf0;
     }
 
     // Active state
     &.active > a {
       overflow: hidden;
-      border-top-color: transparent;
-      &:after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background-color: @nav-pills-active-link-hover-bg;
-      }
+      background-color: @white;
     }
   }
 }

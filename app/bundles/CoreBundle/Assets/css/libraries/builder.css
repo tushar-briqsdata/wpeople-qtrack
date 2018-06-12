@@ -3,7 +3,7 @@
  * License https://froala.com/wysiwyg-editor/terms/
  * Copyright 2014-2017 Froala Labs
  */
-.clearfix::after {
+ .clearfix::after {
   clear: both;
   display: block;
   content: "";

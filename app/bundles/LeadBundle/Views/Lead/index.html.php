@@ -16,13 +16,13 @@ $pageButtons = [];
 if ($permissions['lead:leads:create']) {
     $pageButtons[] = [
         'attr' => [
-            'class'       => 'btn btn-default btn-nospin quickadd',
+            'class'       => 'btn btn-black btn-nospin quickadd',
             'data-toggle' => 'ajaxmodal',
             'data-target' => '#MauticSharedModal',
             'href'        => $view['router']->path('mautic_contact_action', ['objectAction' => 'quickAdd']),
             'data-header' => $view['translator']->trans('mautic.lead.lead.menu.quickadd'),
         ],
-        'iconClass' => 'fa fa-bolt',
+        'iconClass' => 'fa fa-plus',
         'btnText'   => 'mautic.lead.lead.menu.quickadd',
         'primary'   => true,
     ];

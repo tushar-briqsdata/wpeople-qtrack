@@ -168,11 +168,6 @@ ul.tag-cloud li {
     text-align: center;
 }
 
-.timeline-featured td, .timeline-featured th {
-    background: rgba(78, 94, 158, 0.1 );
-    border-right: 1px solid rgba(78, 94, 158, 0.1) !important;
-}
-
 #contact-timeline td {
     overflow-wrap: break-word;
     word-wrap: break-word;
@@ -192,10 +187,6 @@ ul.tag-cloud li {
 
 #contact-timeline .dl-horizontal dd {
     margin-left: 0px;
-}
-
-#contact-timeline tr.timeline-row-highlighted {
-    background-color: #fafafa;
 }
 
 #contact-timeline tr.timeline-details img {

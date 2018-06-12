@@ -11130,14 +11130,14 @@
             // grid line settings
             gridLines: {
                 display: true,
-                color: 'rgba(0, 0, 0, 0.1)',
+                color: 'rgba(255, 255, 255, 1)',
                 lineWidth: 1,
                 drawBorder: true,
                 drawOnChartArea: true,
                 drawTicks: true,
                 tickMarkLength: 10,
                 zeroLineWidth: 1,
-                zeroLineColor: 'rgba(0,0,0,0.25)',
+                zeroLineColor: 'rgba(255,255,255,1)',
                 offsetGridLines: false,
                 borderDash: [],
                 borderDashOffset: 0.0
@@ -14004,7 +14004,7 @@
 
             angleLines: {
                 display: true,
-                color: 'rgba(0, 0, 0, 0.1)',
+                color: 'rgba(255, 255, 255, 1)',
                 lineWidth: 1
             },
 

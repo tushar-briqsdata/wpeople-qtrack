@@ -28,7 +28,7 @@ $baseUrl = isset($lead) ? $view['router']->path(
             'mautic.lead.timeline.events_new'
         ); ?>)
     </div>
-    <table class="table table-hover table-bordered" id="contact-timeline">
+    <table class="table table-hover table-striped table-bordered" id="contact-timeline">
         <thead>
         <tr>
             <th class="timeline-icon">

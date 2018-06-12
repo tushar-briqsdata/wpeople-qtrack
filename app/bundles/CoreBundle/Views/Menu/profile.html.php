@@ -21,12 +21,12 @@ $inline = $view['menu']->render('profile');
     <ul class="dropdown-menu dropdown-menu-right">
         <li>
             <a href="<?php echo $view['router']->path('mautic_user_account'); ?>" data-toggle="ajax">
-                <i class="fa fa-user fs-14"></i><span><?php echo $view['translator']->trans('mautic.user.account.settings'); ?></span>
+                <?php echo $view['translator']->trans('mautic.user.account.settings'); ?>
             </a>
         </li>
         <li>
             <a href="<?php echo $view['router']->path('mautic_user_logout'); ?>">
-                <i class="fa fa-sign-out fs-14"></i><span><?php echo $view['translator']->trans('mautic.user.auth.logout'); ?></span>
+                <?php echo $view['translator']->trans('mautic.user.auth.logout'); ?>
             </a>
         </li>
 

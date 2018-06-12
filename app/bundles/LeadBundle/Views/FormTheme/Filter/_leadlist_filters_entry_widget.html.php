@@ -28,7 +28,7 @@ if (!$isPrototype && !isset($fields[$object][$filterType]['label'])) {
     </div>
     <div class="panel-body">
         <div class="col-xs-6 col-sm-3 field-name">
-            <i class="object-icon fa <?php echo $class; ?>" aria-hidden="true"></i> <span><?php echo ($isPrototype) ? '__label__' : $fields[$object][$filterType]['label']; ?></span>
+            <span><?php echo ($isPrototype) ? '__label__' : $fields[$object][$filterType]['label']; ?></span>
         </div>
 
         <div class="col-xs-6 col-sm-3 padding-none">

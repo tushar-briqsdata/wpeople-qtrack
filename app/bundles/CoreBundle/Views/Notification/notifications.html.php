@@ -32,13 +32,13 @@
                         'updateMessage' => $updateMessage,
                     ]); ?>
                     <?php $class = (!empty($notifications)) ? ' hide' : ''; ?>
-                    <div style="width: 100px; margin: 75px auto 0 auto;" class="<?php echo $class; ?> mautibot-image" id="notificationMautibot">
+                    <!-- <div style="width: 100px; margin: 75px auto 0 auto;" class="<?php echo $class; ?> mautibot-image" id="notificationMautibot">
                         <img class="img img-responsive" src="<?php echo $view['mautibot']->getImage('wave'); ?>" />
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <?php $lastNotification = reset($notifications); ?>
-            <input id="mauticLastNotificationId" type="hidden" value="<?php echo $view->escape($lastNotification['id']); ?>" />
+            <input id="mauticLastNotificationId" type="hidden" value="<?php echo $lastNotification['id']; ?>" />
         </div>
     </div>
 </li>

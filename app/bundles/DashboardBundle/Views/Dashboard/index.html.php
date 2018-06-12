@@ -26,7 +26,7 @@ $buttons = [
     ],
     [
         'attr' => [
-            'class'       => 'btn btn-default btn-nospin',
+            'class'       => 'btn btn-success btn-nospin',
             'href'        => 'javascript:void()',
             'onclick'     => "Mautic.saveDashboardLayout('{$view['translator']->trans('mautic.dashboard.confirmation_layout_name')}');",
             'data-toggle' => '',
@@ -80,7 +80,7 @@ $view['slots']->set('actions', $view->render('MauticCoreBundle:Helper:page_actio
     <div class="well well col-md-6 col-md-offset-3 mt-md">
         <div class="row">
             <div class="mautibot-image col-xs-3 text-center">
-                <img class="img-responsive" style="max-height: 125px; margin-left: auto; margin-right: auto;" src="<?php echo $view['mautibot']->getImage('wave'); ?>" />
+                <!-- <img class="img-responsive" style="max-height: 125px; margin-left: auto; margin-right: auto;" src="<?php echo $view['mautibot']->getImage('wave'); ?>" /> -->
             </div>
             <div class="col-xs-9">
                 <h4><i class="fa fa-quote-left"></i> <?php echo $view['translator']->trans('mautic.dashboard.nowidgets.tip.header'); ?> <i class="fa fa-quote-right"></i></h4>

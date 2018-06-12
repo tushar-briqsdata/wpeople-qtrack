@@ -44,7 +44,7 @@ $view['slots']->set('headerTitle', $view['translator']->trans('mautic.asset.remo
                 <!-- container -->
                 <div class="col-md-9 bg-auto bdr-l">
                     <div id="remoteFileBrowser">
-                        <div class="alert alert-warning col-md-6 col-md-offset-3 mt-md">
+                        <div class="alert alert-info col-md-6 col-md-offset-3 mt-md">
                             <p><?php echo $view['translator']->trans('mautic.asset.remote.select_service'); ?></p>
                         </div>
                     </div>

@@ -9,11 +9,16 @@
 
 // The dropdown menu (ul)
 .dropdown-menu {
-  .box-shadow(0 3px 6px rgba(0,0,0,.06));
+  .box-shadow(none) !important;
+  padding: 0 !important;
+  border-radius: 0;
+  border-color:#d4d4d4 !important;
+  background-color:#f0f0f0 !important;
 
   // Dividers (basically an hr) within the dropdown
   .divider {
     margin: 5px 0;
+
   }
 
   // reset panel style
@@ -31,16 +36,68 @@
   }
 
   // Links within the dropdown menu
-  > li > a {
+  > li{ 
     position: relative;
-    z-index: 1;
-    margin-top: -1px;
-    padding: 5px 20px;
-    border-top: 1px solid transparent;
-    border-bottom: 1px solid transparent;
-
-    .fa {
-      min-width: 15px;
+    padding:0;
+    color:#868686;
+    &.dropdown-header{
+      padding-left:15px;
+      padding-right:15px;
+    }
+    > a {
+      position: relative;
+      z-index: 1;
+      padding: 9px 15px;
+      line-height: 30px;
+      color:#868686;
+      border-top: 1px solid #d8d8d8;
+      font-weight: 600;
+      border-bottom: none;
+      &:hover,
+      &:focus {
+          background-color: @white;
+          color:#404040 !important;
+      }
+      .fa {
+        min-width: 15px;
+        display:none !important;
+      }
+      &:before {
+        content: "";
+        position: absolute;
+        z-index: 9;
+        width: 3px;
+        background: @dropdown-menu-leftbar;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        opacity: 0;
+      }
+      &:first-child{
+        border: 0;
+      }
+    }
+    /*&:hover,
+    &:focus {
+        background-color: @white;
+        color:#404040 !important;
+    }*/
+    
+    &:hover,
+    &.active{
+      >a{
+        &:before {
+            opacity: 1;
+        }
+      }
+    }
+    &.active {
+          /*background-color: @white;
+          color:#404040 !important;*/
+        >a{
+          background-color: @white;
+          color:#404040 !important;
+        }
     }
   }
 }

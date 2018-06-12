@@ -48,7 +48,7 @@ $view['slots']->set('actions', $view->render('MauticCoreBundle:Helper:page_actio
                 <div class="col-md-12">
                     <?php $hookLog = $item->getLogs(); ?>
                     <?php if (!count($hookLog)): ?>
-                        <div class="alert alert-warning col-md-6 col-md-offset-3 mt-md" style="white-space: normal;">
+                        <div class="alert alert-info col-md-6 col-md-offset-3 mt-md" style="white-space: normal;">
                             <h4>
                                 <?php echo $view['translator']->trans('mautic.webhook.no.logs'); ?>
                             </h4>

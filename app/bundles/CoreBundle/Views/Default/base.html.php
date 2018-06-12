@@ -31,9 +31,34 @@
 
             <!-- start: app-header -->
             <header id="app-header" class="navbar">
-               <?php echo $view->render('MauticCoreBundle:Default:navbar.html.php'); ?>
+                <!-- start: sidebar-header -->
+                <div class="sidebar-header">
+                    <!-- brand -->
+                    <a class="mautic-brand<?php echo (!empty($extraMenu)) ? ' pull-left pl-0 pr-0' : ''; ?>" href="#">
+                        <!-- logo figure -->
+                        <img src="<?php echo $view['assets']->getUrl('media/images/logo.png');?>" class="mautic-logo-figure logo_small">
+                        <!--/ logo figure -->
+                        <!-- logo text -->
+                        <img src="<?php echo $view['assets']->getUrl('media/images/logo_big.png');?>" class="mautic-logo-text mnl-3 logo_big">
+                        <!--/ logo text -->
+                    </a>
+                    <?php if (!empty($extraMenu)): ?>
+                        <div class="dropdown extra-menu">
+                            <a href="#" data-toggle="dropdown" class="dropdown-toggle">
+                                <i class="fa fa-chevron-down fa-lg"></i>
+                            </a>
+                            <?php echo $extraMenu; ?>
+                        </div>
+                    <?php endif; ?>
+                    <!--/ brand -->
+                </div>
+                <!--/ end: sidebar-header -->
 
-               <?php echo $view->render('MauticCoreBundle:Notification:flashes.html.php'); ?>
+                <div class="header-inner">
+                    <?php echo $view->render('MauticCoreBundle:Default:navbar.html.php'); ?>
+
+                    <?php echo $view->render('MauticCoreBundle:Notification:flashes.html.php'); ?>
+               </div>
             </header>
             <!--/ end: app-header -->
 
@@ -42,15 +67,15 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-xs-6 text-muted"><?php echo $view['translator']->trans('mautic.core.copyright', ['%date%' => date('Y')]); ?></div>
-                        <div class="col-xs-6 text-muted text-right small">v<?php
+                        <div class="col-xs-6 text-muted text-right small"><?php
                             /** @var \Mautic\CoreBundle\Templating\Helper\VersionHelper $version */
                             $version = $view['version'];
-                            echo $version->getVersion(); ?>
+                            //echo $version->getVersion(); ?>
                         </div>
                     </div>
                 </div>
             </footer>
-            <!--/ end: app-footer -->
+            <!--/ end: app-content -->
 
             <!-- start: app-content -->
             <section id="app-content">

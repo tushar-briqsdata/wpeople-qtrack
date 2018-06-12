@@ -39,7 +39,7 @@ $startCount           = 1;
 
 
 <?php if (!empty($columnOrder)):?>
-<table class="table table-hover table-striped table-bordered report-list" id="reportTable">
+<table class="table table-hover table-striped report-list" id="reportTable">
     <thead>
     <tr>
         <th class="col-report-count"></th>

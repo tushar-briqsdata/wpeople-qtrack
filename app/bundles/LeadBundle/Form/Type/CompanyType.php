@@ -127,7 +127,6 @@ class CompanyType extends AbstractType
                     'label' => 'mautic.lead.merge',
                     'attr'  => [
                         'class'       => 'btn btn-default btn-dnd',
-                        'icon'        => 'fa fa-building',
                         'data-toggle' => 'ajaxmodal',
                         'data-target' => '#MauticSharedModal',
                         'data-header' => $this->translator->trans('mautic.lead.company.header.merge'),

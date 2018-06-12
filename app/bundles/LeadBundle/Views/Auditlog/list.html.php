@@ -22,7 +22,7 @@ $baseUrl = $view['router']->path(
 
 <!-- auditlog -->
 <div class="table-responsive">
-    <table class="table table-hover table-bordered" id="contact-auditlog">
+    <table class="table table-hover table-striped table-bordered" id="contact-auditlog">
         <thead>
         <tr>
             <th class="timeline-icon">

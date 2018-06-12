@@ -49,7 +49,7 @@ class FormButtonsType extends AbstractType
                         $options['cancel_attr'],
                         [
                             'class'   => $options['cancel_class'],
-                            'icon'    => $options['cancel_icon'],
+                            /*'icon'    => $options['cancel_icon'],*/
                             'onclick' => $options['cancel_onclick'],
                         ]
                     ),
@@ -67,7 +67,7 @@ class FormButtonsType extends AbstractType
                         $options['save_attr'],
                         [
                             'class'   => $options['save_class'],
-                            'icon'    => $options['save_icon'],
+                            /*'icon'    => $options['save_icon'],*/
                             'onclick' => $options['save_onclick'],
                         ]
                     ),
@@ -85,7 +85,7 @@ class FormButtonsType extends AbstractType
                         $options['apply_attr'],
                         [
                             'class'   => $options['apply_class'],
-                            'icon'    => $options['apply_icon'],
+                            /*'icon'    => $options['apply_icon'],*/
                             'onclick' => $options['apply_onclick'],
                         ]
                     ),
