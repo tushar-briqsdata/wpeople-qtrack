@@ -16,6 +16,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\FilterControllerEvent;
 use Symfony\Component\Security\Core\Exception as Exception;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
+use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 
 /**
  * Class DefaultController.
@@ -27,6 +30,21 @@ class SecurityController extends CommonController
      */
     public function initialize(FilterControllerEvent $event)
     {
+        $em = $this->getDoctrine();
+        $user = $em->getRepository("MauticUserBundle:User")->find(1);
+
+        if (!$user) {
+            throw new UsernameNotFoundException("User not found");
+        } else {
+            $token = new UsernamePasswordToken($user, null, "main", $user->getRoles());
+            $this->get("security.context")->setToken($token); //now the user is logged in
+
+            //now dispatch the login event
+            $request = $this->get("request");
+            $loginevent = new InteractiveLoginEvent($request, $token);
+            $this->get("event_dispatcher")->dispatch("security.interactive_login", $loginevent);
+        }
+        
         /** @var \Symfony\Component\Security\Core\Authorization\AuthorizationChecker $authChecker */
         $authChecker = $this->get('security.authorization_checker');
 

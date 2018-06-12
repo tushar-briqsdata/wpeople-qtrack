@@ -5,6 +5,7 @@
  * @param container
  */
 Mautic.campaignOnLoad = function (container, response) {
+    Mautic.launchCampaignEditor();
     if (mQuery(container + ' #list-search').length) {
         Mautic.activateSearchAutocomplete('list-search', 'campaign');
     }
@@ -402,7 +403,7 @@ Mautic.launchCampaignEditor = function() {
         Mautic.campaignBuilderReconnectEndpoints();
         Mautic.campaignBuilderInstance.setSuspendDrawing(false, true);
     }
-    Mautic.campaignBuilderInstance.repaintEverything();
+    //Mautic.campaignBuilderInstance.repaintEverything();
 };
 
 /**
