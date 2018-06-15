@@ -111,15 +111,15 @@ class CampaignApiController extends CommonApiController
         $method = $this->request->getMethod();
 
         if ($method === 'POST' || $method === 'PUT') {
-            if (empty($parameters['events'])) {
-                $msg = $this->get('translator')->trans('mautic.campaign.form.events.notempty', [], 'validators');
+            // if (empty($parameters['events'])) {
+            //     $msg = $this->get('translator')->trans('mautic.campaign.form.events.notempty', [], 'validators');
 
-                return $this->returnError($msg, Codes::HTTP_BAD_REQUEST);
-            } elseif (empty($parameters['lists']) && empty($parameters['forms'])) {
-                $msg = $this->get('translator')->trans('mautic.campaign.form.sources.notempty', [], 'validators');
+            //     return $this->returnError($msg, Codes::HTTP_BAD_REQUEST);
+            // } elseif (empty($parameters['lists']) && empty($parameters['forms'])) {
+            //     $msg = $this->get('translator')->trans('mautic.campaign.form.sources.notempty', [], 'validators');
 
-                return $this->returnError($msg, Codes::HTTP_BAD_REQUEST);
-            }
+            //     return $this->returnError($msg, Codes::HTTP_BAD_REQUEST);
+            // }
         }
 
         $deletedSources = ['lists' => [], 'forms' => []];
