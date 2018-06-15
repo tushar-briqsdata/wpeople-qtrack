@@ -157,6 +157,7 @@ class AppKernel extends Kernel
             new Symfony\Bundle\TwigBundle\TwigBundle(),
             new Debril\RssAtomBundle\DebrilRssAtomBundle(),
             // Mautic Bundles
+            new Mautic\AdminBundle\MauticAdminBundle(),
             new Mautic\ApiBundle\MauticApiBundle(),
             new Mautic\AssetBundle\MauticAssetBundle(),
             new Mautic\CalendarBundle\MauticCalendarBundle(),
