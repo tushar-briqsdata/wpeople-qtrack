@@ -5,6 +5,7 @@
  * @param container
  */
 Mautic.campaignOnLoad = function (container, response) {
+    Mautic.prepareCampaignCanvas();
     Mautic.launchCampaignEditor();
     if (mQuery(container + ' #list-search').length) {
         Mautic.activateSearchAutocomplete('list-search', 'campaign');
