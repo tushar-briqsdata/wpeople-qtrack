@@ -38,7 +38,7 @@
             </a>
         </li>
         <?php echo $view['actions']->render(new \Symfony\Component\HttpKernel\Controller\ControllerReference('MauticCoreBundle:Default:globalSearch')); ?>
-        <?php echo $view['actions']->render(new \Symfony\Component\HttpKernel\Controller\ControllerReference('MauticCoreBundle:Default:notifications')); ?>
+        <?php #echo $view['actions']->render(new \Symfony\Component\HttpKernel\Controller\ControllerReference('MauticCoreBundle:Default:notifications')); ?>
     </ul>
     <!--/ end: left nav -->
     <div class="navbar-toolbar pull-right mt-15 mr-10">
