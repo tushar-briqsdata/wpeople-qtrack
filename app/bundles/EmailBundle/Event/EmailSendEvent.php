@@ -129,6 +129,8 @@ class EmailSendEvent extends CommonEvent
         if (isset($args['textHeaders'])) {
             $this->textHeaders = $args['textHeaders'];
         }
+
+        $this->addTextHeader("X-SP-Transact-Id", "4d5d454sdf5g4s54g5s4sfg4s5g4");
     }
 
     /**

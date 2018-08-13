@@ -678,6 +678,8 @@ class PublicController extends CommonFormController
             // To lead
             $mailer->addTo($email);
 
+            $mailer->addCustomHeader("X-SP-Transact-Id", "4d5d454sdf5g4s54g5s4sfg4s5g4");
+
             // sanitize variables to prevent malicious content
             $from = filter_var($query['from'], FILTER_SANITIZE_EMAIL);
             $mailer->setFrom($from, '');

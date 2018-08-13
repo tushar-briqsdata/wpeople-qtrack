@@ -1339,6 +1339,7 @@ class LeadController extends FormController
                             $email['from'],
                             empty($email['fromname']) ? null : $email['fromname']
                         );
+                        $mailer->addCustomHeader("X-SP-Transact-Id", "4d5d454sdf5g4s54g5s4sfg4s5g4");
 
                         // Set Content
                         $mailer->setBody($email['body']);
