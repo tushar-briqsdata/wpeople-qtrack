@@ -60,4 +60,43 @@ class ReportApiController extends CommonApiController
 
         return $this->handleView($view);
     }
+    
+    public function newReportAction(){
+        $entity = $this->model->getEntity();
+        
+        $parameters = $this->request->request->all();
+        if(isset($parameters["campaign_id"]) && $parameters["campaign_id"]){
+            $parameters["name"] = "Program report ".$parameters["campaign_id"];
+            $parameters["source"] = "email.stats";
+            $parameters["description"] = "Program report ".$parameters["campaign_id"];
+            $parameters["isPublished"] = 1;
+            $parameters["system"] = 1;
+            $parameters["columns"][] = "clel.campaign_id";
+            $parameters["columns"][] = "bounced";
+            $parameters["columns"][] = "e.name";
+            $parameters["columns"][] = "e.subject";
+            $parameters["columns"][] = "is_hit";
+            $parameters["columns"][] = "hits";
+            $parameters["columns"][] = "es.date_read";
+            $parameters["columns"][] = "es.date_sent";
+            $parameters["columns"][] = "es.email_address";
+            $parameters["columns"][] = "i.ip_address";
+            $parameters["columns"][] = "read_delay";
+            $parameters["columns"][] = "es.retry_count";
+            $parameters["columns"][] = "e.revision";
+            $parameters["columns"][] = "e.sent_count";
+            $parameters["columns"][] = "unique_hits";
+            $parameters["columns"][] = "unsubscribed";
+            $parameters["columns"][] = "es.viewed_in_browser";
+            $parameters["filters"][2]["glue"] = "and";
+            $parameters["filters"][2]["column"] = "clel.campaign_id";
+            $parameters["filters"][2]["condition"] = "eq";
+            $parameters["filters"][2]["value"] = $parameters["campaign_id"];
+            $parameters["filters"][2]["dynamic"] = 0;
+            
+            return $this->processForm($entity, $parameters, 'POST');
+        }else{
+            return $this->returnError("campaign_id is missing from request", Codes::HTTP_BAD_REQUEST);
+        }
+    }
 }

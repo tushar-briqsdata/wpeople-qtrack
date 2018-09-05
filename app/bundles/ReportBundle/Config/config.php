@@ -57,6 +57,11 @@ return [
                 'path'       => '/reports/{id}',
                 'controller' => 'MauticReportBundle:Api\ReportApi:getReport',
             ],
+            'mautic_api_newreport' => [
+                'path'       => '/reports/new',
+                'controller' => 'MauticReportBundle:Api\ReportApi:newReport',
+                'method' => 'POST',
+            ],
         ],
     ],
 
