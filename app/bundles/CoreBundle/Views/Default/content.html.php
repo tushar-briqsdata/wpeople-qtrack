@@ -30,3 +30,7 @@ endif;
 <?php else: ?>
 <?php $view['slots']->output('_content'); ?>
 <?php endif; ?>
+<script type="text/javascript">
+    obj = JSON.parse(JSON.stringify(window.location));
+    window.parent.postMessage(obj, "*");
+</script>
