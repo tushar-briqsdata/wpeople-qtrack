@@ -1015,6 +1015,9 @@ Mautic.saveCampaignFromBuilder = function() {
             Mautic.inBuilderSubmissionOn(applyBtn.closest('form'));
             applyBtn.trigger('click');
             Mautic.inBuilderSubmissionOff();
+
+            obj = JSON.parse(JSON.stringify({msg: "Data saved"}));
+            window.parent.postMessage(obj, "*");
         }
     });
 };
