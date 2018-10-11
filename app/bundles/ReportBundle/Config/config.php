@@ -63,6 +63,16 @@ return [
                 'method' => 'POST',
             ],
         ],
+        'public' => [
+            'mautic_api_summaryreport' => [
+                'path'       => '/reports/summary/{campaignId}',
+                'controller' => 'MauticReportBundle:Report:summaryReport'
+            ],
+            'mautic_api_rawreport' => [
+                'path'       => '/reports/raw/{campaignId}',
+                'controller' => 'MauticReportBundle:Report:rawReport'
+            ],
+        ]
     ],
 
     'menu' => [
