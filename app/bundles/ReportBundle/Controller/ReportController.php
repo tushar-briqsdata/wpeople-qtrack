@@ -896,7 +896,8 @@ class ReportController extends FormController
         $resultopen = $statement->fetchAll();
 
         $email_ids = $this->pluck_array_reduce('email_id', $resultopen);
-        if(is_array($email_ids)){
+        
+        if(is_array($email_ids) && count($email_ids) > 0){
             $email_ids = array_unique($email_ids);
             $RAW_QUERY = "SELECT * "
                     . "FROM page_hits ph "
