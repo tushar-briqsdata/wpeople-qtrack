@@ -128,12 +128,12 @@ class CampaignSubscriber extends CommonSubscriber
     public function onCampaignBuild(Events\CampaignBuilderEvent $event)
     {
         //Add action to remote url call
-        $sendWebhookAction = [
-            'label'       => 'mautic.webhook.event.sendwebhook',
-            'description' => 'mautic.webhook.event.sendwebhook_desc',
-            'formType'    => 'campaignevent_sendwebhook',
-            'eventName'   => WebhookEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        ];
-        $event->addAction('campaign.sendwebhook', $sendWebhookAction);
+        // $sendWebhookAction = [
+        //     'label'       => 'mautic.webhook.event.sendwebhook',
+        //     'description' => 'mautic.webhook.event.sendwebhook_desc',
+        //     'formType'    => 'campaignevent_sendwebhook',
+        //     'eventName'   => WebhookEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        // ];
+        // $event->addAction('campaign.sendwebhook', $sendWebhookAction);
     }
 }

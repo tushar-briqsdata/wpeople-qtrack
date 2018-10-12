@@ -40,15 +40,15 @@ class CampaignSubscriber extends CommonSubscriber
      */
     public function onCampaignBuild(CampaignBuilderEvent $event)
     {
-        $action = [
-            'label'       => 'mautic.plugin.actions.push_lead',
-            'description' => 'mautic.plugin.actions.tooltip',
-            'formType'    => 'integration_list',
-            'formTheme'   => 'MauticPluginBundle:FormTheme\Integration',
-            'eventName'   => PluginEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        ];
+        // $action = [
+        //     'label'       => 'mautic.plugin.actions.push_lead',
+        //     'description' => 'mautic.plugin.actions.tooltip',
+        //     'formType'    => 'integration_list',
+        //     'formTheme'   => 'MauticPluginBundle:FormTheme\Integration',
+        //     'eventName'   => PluginEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        // ];
 
-        $event->addAction('plugin.leadpush', $action);
+        // $event->addAction('plugin.leadpush', $action);
     }
 
     /**

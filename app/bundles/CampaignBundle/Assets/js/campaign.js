@@ -433,8 +433,8 @@ Mautic.campaignBuilderConnectionsMap = {
             // target
             'source': [],
             'action': ['top'], // target anchors
-            'condition': ['top'],
-            'decision': ['top'],
+            'condition': [],
+            'decision': [],
         },
         'leadsourceleft': {
             'source': ['leadsourceright'],
@@ -1351,6 +1351,7 @@ Mautic.campaignBuilderRegisterAnchors = function(names, el) {
 
             // Note the anchor so it can be auto attached after the event is created
             var epDetails = Mautic.campaignBuilderGetEndpointDetails(endpoint);
+            console.log(epDetails);
             var clickedAnchorName = epDetails.anchorName;
             Mautic.campaignBuilderAnchorClicked = endpoint.elementId+'_'+clickedAnchorName;
             Mautic.campaignBuilderAnchorNameClicked = clickedAnchorName;
@@ -1515,6 +1516,7 @@ Mautic.campaignBuilderRegisterAnchors = function(names, el) {
                 }
             });
             Mautic.campaignBuilderAnchorClickedAllowedEvents = allowedEvents;
+            // alert(allowedEvents);
 
             if (!(mQuery('.preview').length)) {
                 var el = (mQuery(event.target).hasClass('jtk-endpoint')) ? event.target : mQuery(event.target).parents('.jtk-endpoint')[0];
