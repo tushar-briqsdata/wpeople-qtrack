@@ -75,22 +75,22 @@ class CampaignSubscriber extends CommonSubscriber
      */
     public function onCampaignBuild(CampaignBuilderEvent $event)
     {
-        $trigger = [
-            'label'       => 'mautic.form.campaign.event.submit',
-            'description' => 'mautic.form.campaign.event.submit_descr',
-            'formType'    => 'campaignevent_formsubmit',
-            'eventName'   => FormEvents::ON_CAMPAIGN_TRIGGER_DECISION,
-        ];
-        $event->addDecision('form.submit', $trigger);
+        // $trigger = [
+        //     'label'       => 'mautic.form.campaign.event.submit',
+        //     'description' => 'mautic.form.campaign.event.submit_descr',
+        //     'formType'    => 'campaignevent_formsubmit',
+        //     'eventName'   => FormEvents::ON_CAMPAIGN_TRIGGER_DECISION,
+        // ];
+        // $event->addDecision('form.submit', $trigger);
 
-        $trigger = [
-            'label'       => 'mautic.form.campaign.event.field_value',
-            'description' => 'mautic.form.campaign.event.field_value_descr',
-            'formType'    => 'campaignevent_form_field_value',
-            'formTheme'   => 'MauticFormBundle:FormTheme\FieldValueCondition',
-            'eventName'   => FormEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        ];
-        $event->addCondition('form.field_value', $trigger);
+        // $trigger = [
+        //     'label'       => 'mautic.form.campaign.event.field_value',
+        //     'description' => 'mautic.form.campaign.event.field_value_descr',
+        //     'formType'    => 'campaignevent_form_field_value',
+        //     'formTheme'   => 'MauticFormBundle:FormTheme\FieldValueCondition',
+        //     'eventName'   => FormEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        // ];
+        // $event->addCondition('form.field_value', $trigger);
     }
 
     /**
