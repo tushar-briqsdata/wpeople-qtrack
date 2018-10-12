@@ -17,6 +17,7 @@ use Mautic\CoreBundle\Helper\InputHelper;
 use Mautic\ReportBundle\Entity\Report;
 use Mautic\ReportBundle\Model\ExportResponse;
 use Symfony\Component\HttpFoundation;
+use Illuminate\Support\Collection;
 
 /**
  * Class ReportController.
@@ -836,12 +837,74 @@ class ReportController extends FormController
     }
     
     public function summaryReportAction($campaignId){
-        $rawdata = $this->getRawReportData($campaignId);
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        $EMAIL_STATS = "SELECT e.id as email_id, e.name as email_name, e.subject, es.email_address, es.date_sent, c.name as campaign_name, es.open_count, es.lead_id FROM "
+                . "email_stats es "
+                . "INNER JOIN emails e ON e.id = es.email_id "
+                . "INNER JOIN campaign_events ce ON ce.id = es.source_id "
+                . "INNER JOIN campaigns c ON c.id = ce.campaign_id "
+                . "WHERE es.source = 'campaign.event' AND es.source_id in (select id from campaign_events where campaign_id = ".$campaignId.")";
+        
+        $statement = $em->getConnection()->prepare($EMAIL_STATS);
+        $statement->execute();
+        
+        $final_array = [["Campaña", "MailingId", "Email", "Asunto", "Sent", "Received", "Open", "Click Through", "Unique Open", "Unique Click", "Opt Out Reply", "Change Address", "Reply Mail Block", "Hard Bounce", "Soft Bounce", "Suppressed", "Reply Change Address", "Received_Perc", "Open_Perc", "ClickThrough_Perc"]];
+
+        $resultopen = $statement->fetchAll();
+//        echo "<pre>";
+//        print_r($resultopen);exit;
+        if(is_array($resultopen) && count($resultopen) > 0){
+            $resultopen = new Collection($resultopen);
+            $unique_email = $resultopen->keyBy('email_id');
+            foreach ($unique_email as $key => $value) {
+                $clickquery = "SELECT * FROM page_hits ph INNER JOIN page_redirects pr ON pr.id = ph.redirect_id where ph.source = 'email' AND source_id = ".$key;
+                $statement = $em->getConnection()->prepare($clickquery);
+                $statement->execute();
+                $resultclick = new Collection($statement->fetchAll());
+                
+                $totalsent = $resultopen->where('email_id',$key)->groupBy('email_address')->count();
+                $totalreceived = $totalsent;
+                $totalopen = $resultopen->where('email_id',$key)->sum('open_count');
+                $totalclick = $resultclick->count();
+                
+                $unique_click_data = $resultclick->groupBy('lead_id');
+                $unique_click = $unique_click_data->count();
+                
+                $unique_open_data = $resultopen->where('email_id',$key)->where('open_count','>',0)->groupBy('lead_id');
+                $unique_open = $unique_open_data->count();
+                
+                $open_percentage = number_format(100*$unique_open/$totalsent,2);
+                $click_percentage = number_format(($unique_click/$totalsent)*100,2);
+                $received_percentage = number_format(($totalreceived/$totalsent)*100,2);
+                
+                $final_array[] = [$value["campaign_name"], $value["email_id"], $value["email_name"], $value["subject"], $totalsent, $totalreceived, $totalopen, $totalclick, $unique_open, $unique_click,0,0,0,0,0,0,0,$received_percentage,$open_percentage, $click_percentage, ];
+                
+                
+            }
+        } else {
+            
+        }
+        
+        $fileName = 'Program Summary Report '.$campaignId.'.csv';
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header('Content-Description: File Transfer');
+        header("Content-type: text/csv");
+        header("Content-Disposition: attachment; filename={$fileName}");
+        header("Expires: 0");
+        header("Pragma: public");
+        $fh = @fopen( 'php://output', 'w' );
+        
+        foreach ($final_array as $row){
+            fputcsv($fh, $row);
+            //$csvarr[] = [$row["campaign_name"], $row["recipient_id"], "",$row["email_id"], "", "", $row["campaign_id"], $row["email"], $row["event_type"], $row["event_timestamp"],$row["body_type"], $row["content_id"], $row["click_name"], $row["url"], $row["conversion_action"], $row["conversion_detail"], $row["conversion_amount"], $row["suppression_reason"], $row["recipient_name"], $row["email"]];
+        }
+        exit;
+        
     }
     
     public function rawReportAction($campaignId){
         $rawdata = $this->getRawReportData($campaignId);
-        $fileName = 'Program Report '.$campaignId.'.csv';
+        $fileName = 'Program Raw Report '.$campaignId.'.csv';
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
         header('Content-Description: File Transfer');
         header("Content-type: text/csv");
@@ -859,23 +922,10 @@ class ReportController extends FormController
         
     }
     
+    
     private function getRawReportData($campaignId){
         
-        $em = $this->container->get('doctrine.orm.entity_manager');       
-//        $RAW_QUERY = "SELECT c.id campaign_id, c.name campaign_name, "
-//                    . "ce.name campaign_event_name, ce.type campaign_event_type, "
-//                    . "l.id recipient_id, l.email recipient_email, "
-//                    . "e.name email_name, e.subject email_subject, e.from_address email_from_address, "
-//                    . "e.from_name email_from_name, e.reply_to_address email_reply_address, ia.ip_address, es.is_read, es.open_count  "
-//                . "FROM campaign_events ce "
-//                . "LEFT JOIN campaigns c ON c.id = ce.campaign_id "
-//                . "INNER JOIN emails e ON e.id = ce.channel_id AND ce.channel = 'email' "
-//                . "LEFT JOIN email_stats es ON e.id = es.email_id "
-//                . "LEFT JOIN email_stats_devices esd ON esd.stat_id = es.id "
-//                . "LEFT JOIN lead_devices ld ON ld.id = esd.device_id "
-//                . "LEFT JOIN leads l ON l.id = es.lead_id "
-//                . "LEFT JOIN ip_addresses ia ON ia.id = es.ip_id "
-//                . "where ce.campaign_id = ".$campaignId.";";
+        $em = $this->container->get('doctrine.orm.entity_manager');
         $RAW_QUERY = "SELECT c.name campaign_name, l.id recipient_id, l.name recipient_name, e.id email_id, c.id campaign_id, l.email, "
                     . "'open' event_type, esd.date_opened event_timestamp, 'HTML' body_type, '' content_id, '' click_name, '' url, '' conversion_action, "
                     . "'' conversion_detail, '' conversion_amount, '' suppression_reason, ia.id ip_id, ia.ip_address ip_address, esd.device_id "
@@ -926,6 +976,7 @@ class ReportController extends FormController
         }else{
             $resultopen = [];
         }
+        if(is_array($resultopen) && count($resultopen)>0){}
         return $resultopen;
         
     }
