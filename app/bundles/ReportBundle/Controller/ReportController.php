@@ -834,4 +834,109 @@ class ReportController extends FormController
 
         return $response;
     }
+    
+    public function summaryReportAction($campaignId){
+        $rawdata = $this->getRawReportData($campaignId);
+    }
+    
+    public function rawReportAction($campaignId){
+        $rawdata = $this->getRawReportData($campaignId);
+        $fileName = 'Program Report '.$campaignId.'.csv';
+        header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+        header('Content-Description: File Transfer');
+        header("Content-type: text/csv");
+        header("Content-Disposition: attachment; filename={$fileName}");
+        header("Expires: 0");
+        header("Pragma: public");
+        $fh = @fopen( 'php://output', 'w' );
+        $columns = ["Campaña","Recipient Id","Recipient Type","Mailing Id","Qtrack","Report Id","Campaign Id","Email","Event Type","Event Timestamp","Body Type","Content Id","Click Name","URL","Conversion Action","Conversion Detail","Conversion Amount","Suppression Reason","nombre","Email"];
+        fputcsv($fh, $columns);
+        foreach ($rawdata as $row){
+            fputcsv($fh, [$row["campaign_name"], $row["recipient_id"], "",$row["email_id"], "", "", $row["campaign_id"], $row["email"], $row["event_type"], $row["event_timestamp"],$row["body_type"], $row["content_id"], $row["click_name"], $row["url"], $row["conversion_action"], $row["conversion_detail"], $row["conversion_amount"], $row["suppression_reason"], $row["recipient_name"], $row["email"]]);
+            //$csvarr[] = [$row["campaign_name"], $row["recipient_id"], "",$row["email_id"], "", "", $row["campaign_id"], $row["email"], $row["event_type"], $row["event_timestamp"],$row["body_type"], $row["content_id"], $row["click_name"], $row["url"], $row["conversion_action"], $row["conversion_detail"], $row["conversion_amount"], $row["suppression_reason"], $row["recipient_name"], $row["email"]];
+        }
+        exit;
+        
+    }
+    
+    private function getRawReportData($campaignId){
+        
+        $em = $this->container->get('doctrine.orm.entity_manager');       
+//        $RAW_QUERY = "SELECT c.id campaign_id, c.name campaign_name, "
+//                    . "ce.name campaign_event_name, ce.type campaign_event_type, "
+//                    . "l.id recipient_id, l.email recipient_email, "
+//                    . "e.name email_name, e.subject email_subject, e.from_address email_from_address, "
+//                    . "e.from_name email_from_name, e.reply_to_address email_reply_address, ia.ip_address, es.is_read, es.open_count  "
+//                . "FROM campaign_events ce "
+//                . "LEFT JOIN campaigns c ON c.id = ce.campaign_id "
+//                . "INNER JOIN emails e ON e.id = ce.channel_id AND ce.channel = 'email' "
+//                . "LEFT JOIN email_stats es ON e.id = es.email_id "
+//                . "LEFT JOIN email_stats_devices esd ON esd.stat_id = es.id "
+//                . "LEFT JOIN lead_devices ld ON ld.id = esd.device_id "
+//                . "LEFT JOIN leads l ON l.id = es.lead_id "
+//                . "LEFT JOIN ip_addresses ia ON ia.id = es.ip_id "
+//                . "where ce.campaign_id = ".$campaignId.";";
+        $RAW_QUERY = "SELECT c.name campaign_name, l.id recipient_id, l.name recipient_name, e.id email_id, c.id campaign_id, l.email, "
+                    . "'open' event_type, esd.date_opened event_timestamp, 'HTML' body_type, '' content_id, '' click_name, '' url, '' conversion_action, "
+                    . "'' conversion_detail, '' conversion_amount, '' suppression_reason, ia.id ip_id, ia.ip_address ip_address, esd.device_id "
+                . "FROM email_stats_devices esd "
+                . "INNER JOIN email_stats es ON esd.stat_id = es.id "
+                . "INNER JOIN leads l ON l.id = es.lead_id "
+                . "INNER JOIN emails e ON e.id = es.email_id "
+                . "INNER JOIN ip_addresses ia ON ia.id = esd.ip_id "
+                . "INNER JOIN lead_devices ld ON ld.id = esd.device_id "
+                . "INNER JOIN campaign_events ce ON ce.id = es.source_id "
+                . "INNER JOIN campaigns c ON c.id = ce.campaign_id "
+                . "where source = 'campaign.event' AND source_id in (select id from campaign_events where campaign_id = ".$campaignId.")";
+                
+        
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->execute();
+
+        $resultopen = $statement->fetchAll();
+
+        $email_ids = $this->pluck_array_reduce('email_id', $resultopen);
+        
+        if(is_array($email_ids) && count($email_ids) > 0){
+            $email_ids = array_unique($email_ids);
+            $RAW_QUERY = "SELECT * "
+                    . "FROM page_hits ph "
+                    . "INNER JOIN page_redirects pr ON pr.id = ph.redirect_id "
+                    . "where source = 'email' AND source_id in (" . implode(",", $email_ids) . ")";
+
+            $statement = $em->getConnection()->prepare($RAW_QUERY);
+            $statement->execute();
+
+            $resultclick = $statement->fetchAll();
+//            echo "<pre>";
+//            print_r($resultclick);
+//            print_r($resultopen);exit;
+            foreach ($resultclick as $clickresult){
+                foreach($resultopen as $openresult){
+                    if($openresult["ip_id"] == $clickresult["ip_id"] && $openresult["email_id"] == $clickresult["email_id"] && $openresult["recipient_id"] == $clickresult["lead_id"]){
+                        $newobject = $openresult;
+                        $newobject["url"] = $clickresult["url"];
+                        $newobject["event_type"] = "Click Through";
+                        $newobject["event_timestamp"] = $clickresult["date_hit"];
+                        array_push($resultopen, $newobject);
+                        break;
+                    }
+                }
+            }            
+        }else{
+            $resultopen = [];
+        }
+        return $resultopen;
+        
+    }
+    
+    public function pluck_array_reduce($key, $data) {
+        return array_reduce($data, function($result, $array) use($key) {
+            isset($array[$key]) &&
+                    $result[] = $array[$key];
+
+            return $result;
+        }, array());
+    }
+
 }
