@@ -254,6 +254,7 @@ Mautic.disabledEmailAction = function(opener, origin) {
     var emailId = email.val();
     var disabled = emailId === '' || emailId === null;
 
+    opener.mQuery('[id$=_name]').val(email.find('option:selected').html().toString());
     opener.mQuery('[id$=_editEmailButton]').prop('disabled', disabled);
     opener.mQuery('[id$=_previewEmailButton]').prop('disabled', disabled);
 };
