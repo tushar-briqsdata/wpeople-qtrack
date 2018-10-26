@@ -21,7 +21,7 @@ if (empty($route)) {
             <span class="campaign-event-name ellipsis <?= $event['channel']?>">
                 <?php echo $event['name'];  ?>
                 <?php if($event['channel'] == "email"): ?>
-                    <button class="btn btn-default btn-nospin" onclick="window.open('http://wpeople-qtrack.qdata.io/email/preview/<?= $event['channelId']; ?>', '_blank');">
+                    <button class="btn btn-default btn-nospin" onclick="window.open('https://qpeople.qdata.io/email/preview/<?= $event['channelId']; ?>', '_blank');">
                         <i class="fa fa-external-link"></i>
                     </button>
                 <?php endif; ?>
