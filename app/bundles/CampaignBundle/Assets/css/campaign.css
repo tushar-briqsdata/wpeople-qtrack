@@ -137,6 +137,16 @@
     white-space: nowrap;
 }
 
+.list-campaign-event .campaign-event-name.email {
+    margin-right: 32px;
+}
+.list-campaign-event .campaign-event-name.email button{
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .list-campaign-decision {
     /*background-color: #e5ffff;*/
     border: solid 1px #00b49d;
@@ -150,6 +160,7 @@
 .list-campaign-action {
     /*background-color: #cdddff;*/
     border: solid 1px #9babeb;
+    width: auto;
     /*color: #fff;*/
 }
 

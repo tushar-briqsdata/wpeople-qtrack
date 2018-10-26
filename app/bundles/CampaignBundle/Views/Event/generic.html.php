@@ -17,7 +17,16 @@ if (empty($route)) {
 <div id="CampaignEvent_<?php echo $event['id'] ?>" data-type="<?php echo $event['eventType']; ?>" class="draggable list-campaign-event list-campaign-<?php echo $event['eventType']; ?>" data-event="<?php echo $event['type']; ?>">
 <?php endif; ?>
     <div class="campaign-event-content">
-        <div><span class="campaign-event-name ellipsis"><?php echo $event['name']; ?></span></div>
+        <div>
+            <span class="campaign-event-name ellipsis <?= $event['channel']?>">
+                <?php echo $event['name'];  ?>
+                <?php if($event['channel'] == "email"): ?>
+                    <button class="btn btn-default btn-nospin" onclick="window.open('http://wpeople-qtrack.qdata.io/email/preview/<?= $event['channelId']; ?>', '_blank');">
+                        <i class="fa fa-external-link"></i>
+                    </button>
+                <?php endif; ?>
+            </span>
+        </div>
     </div>
 <?php if (empty($update)): ?>
     <div class="campaign-event-buttons hide">
