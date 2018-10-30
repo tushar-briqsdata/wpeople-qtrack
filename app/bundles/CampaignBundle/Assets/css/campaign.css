@@ -288,3 +288,31 @@
 .list-campaign-action .campaign-event-logic {
     color: #9babeb;
 }
+
+/* Tooltip container */
+.btn-tooltip {
+    position: relative;
+    display: inline-block;
+    opacity: 1;
+}
+
+/* Tooltip text */
+.btn-tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+    left: 140%;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.btn-tooltip:hover .tooltiptext {
+    visibility: visible;
+}

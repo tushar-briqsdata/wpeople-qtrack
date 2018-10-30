@@ -1291,7 +1291,7 @@ Mautic.campaignBuilderRegisterAnchors = function(names, el) {
             );
 
             var dot = mQuery(endpoint.canvas);
-            dot.addClass('jtk-clickable_anchor');
+            dot.addClass('jtk-clickable_anchor btn-tooltip');
 
             if (!dot.find('svg text').length) {
                 // Add a plus sign to SVG
@@ -1306,6 +1306,16 @@ Mautic.campaignBuilderRegisterAnchors = function(names, el) {
                 textElement.setAttributeNS(null, 'dy', '.3em');
 
                 var textNode = document.createTextNode('+');
+
+                if(dot.hasClass('CampaignEvent_lists')) {
+                    dot.append("<span class='tooltiptext'>Elija el primer envío que enviará en su campaña</span>");
+                } else if(dot.hasClass('jtk-endpoint-anchor-yes')) {
+                    dot.append("<span class='tooltiptext'>Seleccionar aquí SI se cumplió el objetivo</span>");
+                } else if(dot.hasClass('jtk-endpoint-anchor-no')) {
+                    textNode = document.createTextNode('-');
+                    dot.append("<span class='tooltiptext'>Seleccionar aquí si NO se cumplió el objetivo</span>");
+                }
+
                 textElement.appendChild(textNode);
                 svg.appendChild(textElement);
             }
