@@ -476,7 +476,7 @@ class EmailSubscriber extends CommonSubscriber {
                     'listId' => $export_raw_data['listId'],
                     'mailingName' => $user_email.time(),
                 ];
-            echo '<pre>';print_r($user_export_raw_data);exit;
+            //echo '<pre>';print_r($user_export_raw_data);exit;
             $res = $this->client->request('POST', $this->aws_api_url.'reports/exportrawdata', [
                 'headers' => ['Content-Type' => 'application/json'],
                 'body' => json_encode($user_export_raw_data)
@@ -484,7 +484,7 @@ class EmailSubscriber extends CommonSubscriber {
 
             $res->getHeader('content-type');
             $ress_body = json_decode($res->getBody(),true);
-            echo '<pre>';print_r($ress_body);exit;
+            //echo '<pre>';print_r($ress_body);exit;
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
