@@ -213,4 +213,13 @@ final class EmailEvents
      * @var string
      */
     const ON_SENT_EMAIL_TO_USER = 'mautic.email.on_sent_email_to_user';
+    /**
+     * The mautic.email_before_send event is dispatched before an email is sent.
+     *
+     * The event listener receives a
+     * Mautic\EmailBundle\Event\EmailSendEvent instance.
+     *
+     * @var string
+     */
+    const EMAIL_BEFORE_SEND = 'mautic.email_before_send';
 }

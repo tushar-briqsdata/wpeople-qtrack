@@ -57,7 +57,7 @@
 !/media/images/mautic_logo*
 !/media/images/.htaccess
 
-/plugins/*
+!/plugins/*
 !/plugins/MauticCitrixBundle
 !/plugins/MauticClearbitBundle
 !/plugins/MauticCloudStorageBundle
