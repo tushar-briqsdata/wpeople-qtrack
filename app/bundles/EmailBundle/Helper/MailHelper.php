@@ -451,7 +451,22 @@ class MailHelper
                 if (!$this->transport->isStarted()) {
                     $this->transportStartTime = time();
                 }
-                $this->mailer->send($this->message, $failures);
+                
+                if ($dispatchSendEvent) {
+                    if ($this->dispatcher == null) {
+                        $this->dispatcher = $this->factory->getDispatcher();
+                    }
+                    $event = new EmailSendEvent($this);
+                    $this->dispatcher->dispatch(EmailEvents::EMAIL_BEFORE_SEND, $event);
+                    if(!$event->isPropagationStopped()){
+                        $this->mailer->send($this->message, $failures);
+                        
+                    }
+                    unset($event);
+                    
+                } else{
+                    $this->mailer->send($this->message, $failures);
+                }
 
                 if (!empty($failures)) {
                     $this->errors['failures'] = $failures;

@@ -68,10 +68,12 @@ class EmailSubscriber extends CommonSubscriber {
 //            echo "<br>";
             //print_r($headers->getAll());
             if (!$event->isInternalSend()) {
+                
                 $eventSource = $source = $event->getSource();
-//                $campaigneventData = $campaignEventem->find($source[1]);
-//                $lead_id = $event->getLead()["id"];
-//                $campaign_id = $campaigneventData->getCampaign()->getId();
+                $campaigneventData = $campaignEventem->find($source[1]);
+                $lead_id = $event->getLead()["id"];
+                $campaign_id = $campaigneventData->getCampaign()->getId();
+                $contactlistName = $event->getEmail()->getId()."-".$eventSource[1]."-".$campaign_id;
                 $toData = [];
                 $fromData = [];
                 $event->stopPropagation();
@@ -152,7 +154,7 @@ class EmailSubscriber extends CommonSubscriber {
                 $mail_id = $event->getIdHash();
                 $insert_silverpop_data = ['mail_id'=>$mail_id,
                     'lead_id'=>$lead_id,
-                    'campaign_id'=>1,
+                    'campaign_id'=>$source_id,
                     'silverpop_recipientid'=>$resp_receipt_data['data']['data']['recipientId'],
                     'silverpop_contactlistid'=>$contactListId,
                     'silverpop_mailingid'=>$resp_create_mail_data['data']['data']['MailingID'],
@@ -179,7 +181,7 @@ class EmailSubscriber extends CommonSubscriber {
 //            $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 //            $mail->send();
 //            echo 'Message has been sent';
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
 //            echo 'Message could not be sent. Mailer Error: ', $mail->ErrorInfo;
         }
     }
@@ -212,16 +214,16 @@ class EmailSubscriber extends CommonSubscriber {
 
             $res->getHeader('content-type');
             $ress_body = json_decode($res->getBody(),true);
-            //echo '<pre>';print_r($ress_body);exit;
+            echo '<pre>';print_r($ress_body);exit;
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
-                throw new Exception($msg,0);    
+                throw new \Exception($msg,0);    
             }
             
             if(!is_array($ress_body['data'])){
                 $msg = 'error in response data of api';
-                throw new Exception($msg,0);   
+                throw new \Exception($msg,0);   
             }
             
             //$user_email_id = 'harshshah@qdata.io';
@@ -235,8 +237,8 @@ class EmailSubscriber extends CommonSubscriber {
             $q->execute();*/
             
             $msg = 'succesfully data';
-            throw new Exception($msg,1);
-        } catch (Exception $e) {
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
             $msg = $e->getMessage();
             $isuccess=$e->getCode();
         }
@@ -270,12 +272,12 @@ class EmailSubscriber extends CommonSubscriber {
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
-                throw new Exception($msg,0);    
+                throw new \Exception($msg,0);    
             }
             
             if(!is_array($ress_body['data'])){
                 $msg = 'error in response data of api';
-                throw new Exception($msg,0);   
+                throw new \Exception($msg,0);   
             }
             
             //$user_email_id = 'harshshah@qdata.io';
@@ -290,8 +292,8 @@ class EmailSubscriber extends CommonSubscriber {
             $q->execute();*/
             
             $msg = 'succesfully data';
-            throw new Exception($msg,1);
-        } catch (Exception $e) {
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
             $msg = $e->getMessage();
             $isuccess=$e->getCode();
         }
@@ -325,17 +327,17 @@ class EmailSubscriber extends CommonSubscriber {
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
-                throw new Exception($msg,0);    
+                throw new \Exception($msg,0);    
             }
             
             if(!is_array($ress_body['data'])){
                 $msg = 'error in response data of api';
-                throw new Exception($msg,0);   
+                throw new \Exception($msg,0);   
             }
             
             $msg = 'succesfully data';
-            throw new Exception($msg,1);
-        } catch (Exception $e) {
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
             $msg = $e->getMessage();
             $isuccess=$e->getCode();
         }
@@ -374,12 +376,12 @@ class EmailSubscriber extends CommonSubscriber {
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
-                throw new Exception($msg,0);    
+                throw new \Exception($msg,0);    
             }
             
             if(!is_array($ress_body['data'])){
                 $msg = 'error in response data of api';
-                throw new Exception($msg,0);   
+                throw new \Exception($msg,0);   
             }
             
             //$user_email_id = 'harshshah@qdata.io';
@@ -395,8 +397,8 @@ class EmailSubscriber extends CommonSubscriber {
             $q->execute();*/
 
             $msg = 'succesfully data';
-            throw new Exception($msg,1);
-        } catch (Exception $e) {
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
             $msg = $e->getMessage();
             $isuccess=$e->getCode();
         }
@@ -432,12 +434,12 @@ class EmailSubscriber extends CommonSubscriber {
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
-                throw new Exception($msg,0);    
+                throw new \Exception($msg,0);    
             }
             
             if(!is_array($ress_body['data'])){
                 $msg = 'error in response data of api';
-                throw new Exception($msg,0);   
+                throw new \Exception($msg,0);   
             }
             
             //$user_email_id = 'harshshah@qdata.io';
@@ -453,8 +455,8 @@ class EmailSubscriber extends CommonSubscriber {
             $q->execute();*/
 
             $msg = 'succesfully data';
-            throw new Exception($msg,1);
-        } catch (Exception $e) {
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
             $msg = $e->getMessage();
             $isuccess=$e->getCode();
         }
@@ -488,12 +490,12 @@ class EmailSubscriber extends CommonSubscriber {
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
-                throw new Exception($msg,0);    
+                throw new \Exception($msg,0);    
             }
             
             if(!is_array($ress_body['data'])){
                 $msg = 'error in response data of api';
-                throw new Exception($msg,0);   
+                throw new \Exception($msg,0);   
             }
             
             //$user_email_id = 'harshshah@qdata.io';
@@ -509,8 +511,8 @@ class EmailSubscriber extends CommonSubscriber {
             $q->execute();*/
 
             $msg = 'succesfully data';
-            throw new Exception($msg,1);
-        } catch (Exception $e) {
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
             $msg = $e->getMessage();
             $isuccess=$e->getCode();
         }
