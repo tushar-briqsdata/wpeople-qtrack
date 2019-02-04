@@ -34,7 +34,7 @@ class EmailSubscriber extends CommonSubscriber {
         //echo 'constructor';exit;
         $this->client = new GuzzleClient();
         $this->silverpopconfig = ['silverpopPod'=>3,'silverpopClientId'=>'15d2ff11-8023-4dc9-be4b-f57c967fac4b','silverpopClientSecret'=>'86714b70-d4c4-4323-b19b-5ea72a49b24b','silverpopRefreshToken'=>'r9hTGkInyn40Qf778pSUlGjfTBnnfo9edCk97-FV37C4S1'];
-        $this->database_list_id = 9568432;
+        $this->database_list_id = 9857903;
         $this->aws_api_url = 'https://9maq510jxb.execute-api.us-east-1.amazonaws.com/stage/';
     }
 
@@ -113,7 +113,8 @@ class EmailSubscriber extends CommonSubscriber {
                 $receipt_data = ['email'=>$to_email];
                 //echo $to_email.'to_email'.$from_email.'from_email';exit;
                 $resp_receipt_data = $this->lamdaApiUserReceiptData($receipt_data);
-                //echo '<pre>';print_r($resp_receipt_data);exit;
+                //echo '<pre>';print_r($resp_receipt_data);
+                //exit;
                 $create_contact_data = ['email'=>$to_email];
                 $resp_create_contact_data = $this->lamdaApiUserCreateContactData($create_contact_data);
                 //echo 'resp_create_contact_data';echo '<pre>';print_r($resp_create_contact_data);
@@ -121,7 +122,8 @@ class EmailSubscriber extends CommonSubscriber {
                 //echo $contactListId.'contactListId';exit;
                 $add_contact_list_data = ['contact_list_id'=>$contactListId,'email'=>$to_email];
                 $resp_add_contact_list_data = $this->lamdaApiUserAddContactListData($add_contact_list_data);
-                //echo 'resp_add_contact_list_data';echo '<pre>';print_r($resp_add_contact_list_data);exit;
+                //echo 'resp_add_contact_list_data';echo '<pre>';print_r($resp_add_contact_list_data);
+                //exit;
 
                 $create_mail_data = ['subject'=>$subject,
                                      'fromName'=>$from_name,   
@@ -141,7 +143,8 @@ class EmailSubscriber extends CommonSubscriber {
                                     ];
                 //echo '<pre>';print_r($schedule_mail_data);exit;
                 $resp_schedule_mail_data = $this->lamdaApiUserScheduleMailData($schedule_mail_data);
-                //echo '<pre>';print_r($resp_schedule_mail_data);exit;
+                //echo '<pre>';print_r($resp_schedule_mail_data);
+                //exit;
                 $export_raw_data = ['templateId'=>$resp_create_mail_data['data']['data']['MailingID'],
                                      'listId'=>$contactListId,   
                                      'email'=>$to_email,
@@ -154,13 +157,13 @@ class EmailSubscriber extends CommonSubscriber {
                 $mail_id = $event->getIdHash();
                 $insert_silverpop_data = ['mail_id'=>$mail_id,
                     'lead_id'=>$lead_id,
-                    'campaign_id'=>$source_id,
+                    'campaign_id'=>$campaign_id,
                     'silverpop_recipientid'=>$resp_receipt_data['data']['data']['recipientId'],
                     'silverpop_contactlistid'=>$contactListId,
                     'silverpop_mailingid'=>$resp_create_mail_data['data']['data']['MailingID'],
                 ];
                 $db_insert_silverpop_data = $this->insertSilverPopData($insert_silverpop_data);
-                
+                //echo 'data inserted';exit;
                 //$mail->send();
             }
 
@@ -206,7 +209,8 @@ class EmailSubscriber extends CommonSubscriber {
                 'listId' => $this->database_list_id,
                 'columns' => ['email'=>$user_email]
             ];
-
+            /*echo 'inputuser_receipt_data';
+                print_r($user_receipt_data);                                    */
             $res = $this->client->request('POST', $this->aws_api_url.'database/addreceipient', [
                 'headers' => ['Content-Type' => 'application/json'],
                 'body' => json_encode($user_receipt_data)
@@ -214,14 +218,18 @@ class EmailSubscriber extends CommonSubscriber {
 
             $res->getHeader('content-type');
             $ress_body = json_decode($res->getBody(),true);
-            echo '<pre>';print_r($ress_body);exit;
+            //echo '<pre>';print_r($ress_body);exit;
             $data = $ress_body;
             if(!is_array($ress_body)){
                 $msg = 'error in response of api';
                 throw new \Exception($msg,0);    
             }
             
-            if(!is_array($ress_body['data'])){
+            /*if(!is_array($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }*/
+            if(!isset($ress_body['data'])){
                 $msg = 'error in response data of api';
                 throw new \Exception($msg,0);   
             }
@@ -260,7 +268,8 @@ class EmailSubscriber extends CommonSubscriber {
                 'contactListName' => $user_email.time(),
                 'visibility' => 1
             ];
-
+            /*echo 'inputuser_create_contact_data';
+                print_r($user_create_contact_data);*/                                    
             $res = $this->client->request('POST', $this->aws_api_url.'database/contactlist/create', [
                 'headers' => ['Content-Type' => 'application/json'],
                 'body' => json_encode($user_create_contact_data)
@@ -275,7 +284,11 @@ class EmailSubscriber extends CommonSubscriber {
                 throw new \Exception($msg,0);    
             }
             
-            if(!is_array($ress_body['data'])){
+            /*if(!is_array($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }*/
+            if(!isset($ress_body['data'])){
                 $msg = 'error in response data of api';
                 throw new \Exception($msg,0);   
             }
@@ -315,7 +328,8 @@ class EmailSubscriber extends CommonSubscriber {
                 'contactListId' => $contact_list_id,
                 'columns' => ['email'=>$user_email],
             ];
-            
+            /*echo 'inputuser_add_contact_list_data';
+            print_r($user_add_contact_list_data);*/
             $res = $this->client->request('POST', $this->aws_api_url.'database/contactlist/addcontact', [
                 'headers' => ['Content-Type' => 'application/json'],
                 'body' => json_encode($user_add_contact_list_data)
@@ -330,7 +344,11 @@ class EmailSubscriber extends CommonSubscriber {
                 throw new \Exception($msg,0);    
             }
             
-            if(!is_array($ress_body['data'])){
+            /*if(!is_array($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }*/
+            if(!isset($ress_body['data'])){
                 $msg = 'error in response data of api';
                 throw new \Exception($msg,0);   
             }
@@ -364,7 +382,12 @@ class EmailSubscriber extends CommonSubscriber {
                 'listId' => $create_mail_data['listId'],
                 'html' => $create_mail_data['html'],
             ];
-            
+            /*echo 'user_create_mail_data';
+            echo '<pre>';
+            print_r($user_create_mail_data);
+            exit;*/
+            /*echo 'inputuser_create_mail_data';
+            print_r($user_create_mail_data);*/
             $res = $this->client->request('POST', $this->aws_api_url.'mailing/create', [
                 'headers' => ['Content-Type' => 'application/json'],
                 'body' => json_encode($user_create_mail_data)
@@ -379,7 +402,11 @@ class EmailSubscriber extends CommonSubscriber {
                 throw new \Exception($msg,0);    
             }
             
-            if(!is_array($ress_body['data'])){
+            /*if(!is_array($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }*/
+            if(!isset($ress_body['data'])){
                 $msg = 'error in response data of api';
                 throw new \Exception($msg,0);   
             }
@@ -422,7 +449,11 @@ class EmailSubscriber extends CommonSubscriber {
                     'parentFolder' => 'QTRACK/',
                     'sendHtml' => true,
                 ];
-            
+            /*echo 'user_schedule_mail_data';
+            echo '<pre>';
+            print_r($user_schedule_mail_data);exit;*/
+            /*echo 'inputuser_schedule_mail_data';
+            print_r($user_schedule_mail_data);*/
             $res = $this->client->request('POST', $this->aws_api_url.'mailing/schedule', [
                 'headers' => ['Content-Type' => 'application/json'],
                 'body' => json_encode($user_schedule_mail_data)
@@ -437,14 +468,18 @@ class EmailSubscriber extends CommonSubscriber {
                 throw new \Exception($msg,0);    
             }
             
-            if(!is_array($ress_body['data'])){
+            if(!isset($ress_body['data'])){
                 $msg = 'error in response data of api';
                 throw new \Exception($msg,0);   
             }
+            /*if(!is_array($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }*/
             
             //$user_email_id = 'harshshah@qdata.io';
             //$user_email_id = $create_mail_data['email'];
-            $MailingID = $ress_body['data']['MailingID'];
+            $MailingID = $ress_body['data']['mailingId'];
 
             /*$q = $this->em->getConnection()->createQueryBuilder();
 
