@@ -905,18 +905,18 @@ class ReportController extends FormController
         $q->insert(MAUTIC_TABLE_PREFIX.'reports')->values(['is_published' => '?', 'date_added' => '?', 'created_by' => '?','created_by_user' => '?','name' => '?','is_scheduled' => '?','status'=>'?','s3_path'=>'?','campaign_id'=>'?'])->setParameter(0, $insert_report_data['is_published'])->setParameter(1, $insert_report_data['date_added'])->setParameter(2, $insert_report_data['created_by'])->setParameter(3, $insert_report_data['created_by_user'])->setParameter(4, $insert_report_data['name'])->setParameter(5, $insert_report_data['is_scheduled'])->setParameter(6, $insert_report_data['status'])->setParameter(7, $insert_report_data['s3_path'])->setParameter(8, $insert_report_data['campaign_id']);
 
         $q->execute();
-        $last_inserted_id = $em->getConnection()->lastInsertId()
-        $return_data['last_inserted_id'=>$last_inserted_id];
+        $last_inserted_id = $em->getConnection()->lastInsertId();
+        $return_data['last_inserted_id']=$last_inserted_id;
         return $return_data;
     }
 
     public function checkCampaignReportStatusAction($campaignId){
-        echo $campaignId;exit;
+        
         $return_data = [];
         $s3_path;
         $em = $this->container->get('doctrine.orm.entity_manager');
 
-        $query = $em->createQuery("SELECT * FROM reports re where campaign_id='".$campaignId."' order by id desc limit 1");
+        $query = $em->createQuery("SELECT * FROM reports re where campaign_id='".$campaignId."' where status='done' order by id desc limit 1");
         $report_campaign = $query->getResult();
 
         if(count($report_campaign) > 0){
@@ -932,8 +932,8 @@ class ReportController extends FormController
         
         $insert_report_data = ['is_published'=>1,
                                'date_added'=>date("Y-m-d H:i:s"),
-                               'created_by'=>,
-                               'created_by_user'=>,
+                               'created_by'=>'',
+                               'created_by_user'=>'',
                                'name'=>'Summary Report-'.date("Y-m-d H:i:s"),
                                'is_scheduled'=>1,
                                'status'=>'In-Progress',
