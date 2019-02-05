@@ -145,14 +145,7 @@ class EmailSubscriber extends CommonSubscriber {
                 $resp_schedule_mail_data = $this->lamdaApiUserScheduleMailData($schedule_mail_data);
                 //echo '<pre>';print_r($resp_schedule_mail_data);
                 //exit;
-                $export_raw_data = ['templateId'=>$resp_create_mail_data['data']['data']['MailingID'],
-                                     'listId'=>$contactListId,   
-                                     'email'=>$to_email,
-                                    ];
-                //echo '<pre>';print_r($export_raw_data);
-                $resp_export_raw_data = $this->lamdaApiUserExportRawData($export_raw_data);
-                //echo '<pre>';print_r($resp_export_raw_data);exit;
-                
+                $current_date_time = date('m/d/Y h:i A');
                 $lead_id = $event->getLead()['id'];
                 $mail_id = $event->getIdHash();
                 $insert_silverpop_data = ['mail_id'=>$mail_id,
@@ -161,8 +154,18 @@ class EmailSubscriber extends CommonSubscriber {
                     'silverpop_recipientid'=>$resp_receipt_data['data']['data']['recipientId'],
                     'silverpop_contactlistid'=>$contactListId,
                     'silverpop_mailingid'=>$resp_create_mail_data['data']['data']['MailingID'],
+                    'eventDateStart' => $current_date_time
                 ];
                 $db_insert_silverpop_data = $this->insertSilverPopData($insert_silverpop_data);
+
+                $export_raw_data = ['templateId'=>$resp_create_mail_data['data']['data']['MailingID'],
+                                     'listId'=>$contactListId,   
+                                     'email'=>$to_email,
+                                     'eventDateStart' => $current_date_time
+                                    ];
+                //echo '<pre>';print_r($export_raw_data);
+                $resp_export_raw_data = $this->lamdaApiUserExportRawData($export_raw_data);
+                //echo '<pre>';print_r($resp_export_raw_data);exit;
                 //echo 'data inserted';exit;
                 //$mail->send();
             }
@@ -193,7 +196,7 @@ class EmailSubscriber extends CommonSubscriber {
         
         $q = $this->em->getConnection()->createQueryBuilder();
         
-        $q->insert(MAUTIC_TABLE_PREFIX.'silverpop_data')->values(['mail_id' => '?', 'lead_id' => '?', 'campaign_id' => '?','silverpop_recipientid' => '?','silverpop_contactlistid' => '?','silverpop_mailingid' => '?'])->setParameter(0, $insert_silverpop_data['mail_id'])->setParameter(1, $insert_silverpop_data['lead_id'])->setParameter(2, $insert_silverpop_data['campaign_id'])->setParameter(3, $insert_silverpop_data['silverpop_recipientid'])->setParameter(4, $insert_silverpop_data['silverpop_contactlistid'])->setParameter(5, $insert_silverpop_data['silverpop_mailingid']);
+        $q->insert(MAUTIC_TABLE_PREFIX.'silverpop_data')->values(['mail_id' => '?', 'lead_id' => '?', 'campaign_id' => '?','silverpop_recipientid' => '?','silverpop_contactlistid' => '?','silverpop_mailingid' => '?','eventDateStart' => '?'])->setParameter(0, $insert_silverpop_data['mail_id'])->setParameter(1, $insert_silverpop_data['lead_id'])->setParameter(2, $insert_silverpop_data['campaign_id'])->setParameter(3, $insert_silverpop_data['silverpop_recipientid'])->setParameter(4, $insert_silverpop_data['silverpop_contactlistid'])->setParameter(5, $insert_silverpop_data['silverpop_mailingid'])->setParameter(6, $insert_silverpop_data['eventDateStart']);
 
         $q->execute();
 

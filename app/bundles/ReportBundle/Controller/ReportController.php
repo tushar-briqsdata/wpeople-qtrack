@@ -18,12 +18,21 @@ use Mautic\ReportBundle\Entity\Report;
 use Mautic\ReportBundle\Model\ExportResponse;
 use Symfony\Component\HttpFoundation;
 use Illuminate\Support\Collection;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Class ReportController.
  */
 class ReportController extends FormController
 {
+    public $client;
+    public $dbconfig;
+
+    public function __construct() {
+        $this->client = new GuzzleClient();
+        $this->dbconfig = ['db_host'=>'qtrack-wpeople.cbowlsah6p62.us-east-1.rds.amazonaws.com','db_name'=>'wpeople','db_user'=>'qtrackwpeople','db_password'=>'iWru^QeJD3Kq'];
+        $this->aws_api_url = 'https://9maq510jxb.execute-api.us-east-1.amazonaws.com/stage/';
+    }
     /**
      * @param int $page
      *
@@ -836,9 +845,108 @@ class ReportController extends FormController
         return $response;
     }
     
-    public function summaryReportAction($campaignId){
+    public function lamdaApiSummaryReport($summary_report_data = array()){
+
+        $return_data = [];
+        try {
+            $campain_id = $summary_report_data['campain_id'];
+            //$user_email = 'harshshah1020120120@qdata.io';
+            $user_summary_report_data = ['dbConfig'=>
+                $this->dbconfig,
+                'campaignId' => $campain_id,
+                'Bucket' => 'bancolombia-files'
+            ];
+            /*echo 'inputuser_receipt_data';
+                print_r($user_receipt_data);                                    */
+            $res = $this->client->request('POST', $this->aws_api_url.'reports/summary-report', [
+                'headers' => ['Content-Type' => 'application/json'],
+                'body' => json_encode($user_receipt_data)
+            ]);
+
+            $res->getHeader('content-type');
+            $ress_body = json_decode($res->getBody(),true);
+            //echo '<pre>';print_r($ress_body);exit;
+            $data = $ress_body;
+            if(!is_array($ress_body)){
+                $msg = 'error in response of api';
+                throw new \Exception($msg,0);    
+            }
+            
+            /*if(!is_array($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }*/
+            if(!isset($ress_body['data'])){
+                $msg = 'error in response data of api';
+                throw new \Exception($msg,0);   
+            }
+            
+            //$user_email_id = 'harshshah@qdata.io';
+            $receipt_id = $ress_body['data']['recipientId'];
+
+            $msg = 'succesfully data';
+            throw new \Exception($msg,1);
+        } catch (\Exception $e) {
+            $msg = $e->getMessage();
+            $isuccess=$e->getCode();
+        }
+        $return_data['message'] = $msg;
+        $return_data['success'] = $isuccess;
+        $return_data['data'] = $data;
+        return $return_data;
+    }
+
+    public function insertReportSummaryData($insert_report_data = []){
+
+        $return_data = [];
         $em = $this->container->get('doctrine.orm.entity_manager');
-        $EMAIL_STATS = "SELECT e.id as email_id, e.name as email_name, e.subject, es.email_address, es.date_sent, c.name as campaign_name, es.open_count, es.lead_id FROM "
+        $q = $em->getConnection()->createQueryBuilder();
+        
+        $q->insert(MAUTIC_TABLE_PREFIX.'reports')->values(['is_published' => '?', 'date_added' => '?', 'created_by' => '?','created_by_user' => '?','name' => '?','is_scheduled' => '?','status'=>'?','s3_path'=>'?','campaign_id'=>'?'])->setParameter(0, $insert_report_data['is_published'])->setParameter(1, $insert_report_data['date_added'])->setParameter(2, $insert_report_data['created_by'])->setParameter(3, $insert_report_data['created_by_user'])->setParameter(4, $insert_report_data['name'])->setParameter(5, $insert_report_data['is_scheduled'])->setParameter(6, $insert_report_data['status'])->setParameter(7, $insert_report_data['s3_path'])->setParameter(8, $insert_report_data['campaign_id']);
+
+        $q->execute();
+        $last_inserted_id = $em->getConnection()->lastInsertId()
+        $return_data['last_inserted_id'=>$last_inserted_id];
+        return $return_data;
+    }
+
+    public function checkCampaignReportStatusAction($campaignId){
+        echo $campaignId;exit;
+        $return_data = [];
+        $s3_path;
+        $em = $this->container->get('doctrine.orm.entity_manager');
+
+        $query = $em->createQuery("SELECT * FROM reports re where campaign_id='".$campaignId."' order by id desc limit 1");
+        $report_campaign = $query->getResult();
+
+        if(count($report_campaign) > 0){
+            $s3_path = $report_campaign['s3_path'];
+        }
+
+        $return_data = ['s3_path' => $s3_path];
+        return $return_data;
+    }
+    public function summaryReportAction($campaignId){
+        //echo 'dsadasdas';exit;
+        $em = $this->container->get('doctrine.orm.entity_manager');
+        
+        $insert_report_data = ['is_published'=>1,
+                               'date_added'=>date("Y-m-d H:i:s"),
+                               'created_by'=>,
+                               'created_by_user'=>,
+                               'name'=>'Summary Report-'.date("Y-m-d H:i:s"),
+                               'is_scheduled'=>1,
+                               'status'=>'In-Progress',
+                               's3_path'=>'',
+                               'campaign_id' => $campaignId
+                            ];
+        $db_insert_report_data = $this->insertReportSummaryData($insert_report_data);
+
+        $summary_report_data = ['compaign_id'=>$campaignId,'report_id'=>$db_insert_report_data['last_inserted_id']];
+        $silverpop_summary_report = $this->lamdaApiSummaryReport($summary_report_data);
+
+        return $silverpop_summary_report;
+        /*$EMAIL_STATS = "SELECT e.id as email_id, e.name as email_name, e.subject, es.email_address, es.date_sent, c.name as campaign_name, es.open_count, es.lead_id FROM "
                 . "email_stats es "
                 . "INNER JOIN emails e ON e.id = es.email_id "
                 . "INNER JOIN campaign_events ce ON ce.id = es.source_id "
@@ -897,7 +1005,7 @@ class ReportController extends FormController
         foreach ($final_array as $row){
             fputcsv($fh, $row);
             //$csvarr[] = [$row["campaign_name"], $row["recipient_id"], "",$row["email_id"], "", "", $row["campaign_id"], $row["email"], $row["event_type"], $row["event_timestamp"],$row["body_type"], $row["content_id"], $row["click_name"], $row["url"], $row["conversion_action"], $row["conversion_detail"], $row["conversion_amount"], $row["suppression_reason"], $row["recipient_name"], $row["email"]];
-        }
+        }*/
         exit;
         
     }

@@ -72,6 +72,10 @@ return [
                 'path'       => '/reports/raw/{campaignId}',
                 'controller' => 'MauticReportBundle:Report:rawReport'
             ],
+            'mautic_api_checkcampaignreportstatus' => [
+                'path'       => '/reports/campaignstatus/{campaignId}',
+                'controller' => 'MauticReportBundle:Report:checkCampaignReportStatus'
+            ],
         ]
     ],
 
