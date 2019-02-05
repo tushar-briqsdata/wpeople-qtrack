@@ -916,15 +916,16 @@ class ReportController extends FormController
         $s3_path;
         $em = $this->container->get('doctrine.orm.entity_manager');
 
-        $query = $em->createQuery("SELECT * FROM reports re where campaign_id='".$campaignId."' where status='done' order by id desc limit 1");
+        $query = $em->createQuery("SELECT * FROM reports re where campaign_id='".$campaignId."' order by id desc limit 1");
         $report_campaign = $query->getResult();
-
+        
         if(count($report_campaign) > 0){
-            $s3_path = $report_campaign['s3_path'];
+            $result = $report_campaign;
+        }else{
+            $result = [];
         }
 
-        $return_data = ['s3_path' => $s3_path];
-        return $return_data;
+        return $result;
     }
     public function summaryReportAction($campaignId){
         //echo 'dsadasdas';exit;
