@@ -65,15 +65,11 @@ return [
         ],
         'public' => [
             'mautic_api_summaryreport' => [
-                'path'       => '/reports/summary/{campaignId}',
+                'path'       => '/reports/{type}/{campaignId}',
                 'controller' => 'MauticReportBundle:Report:summaryReport'
             ],
-            'mautic_api_rawreport' => [
-                'path'       => '/reports/raw/{campaignId}',
-                'controller' => 'MauticReportBundle:Report:rawReport'
-            ],
             'mautic_api_checkcampaignreportstatus' => [
-                'path'       => '/reports/campaignstatus/{campaignId}',
+                'path'       => '/reports/campaignstatus/{type}/{campaignId}',
                 'controller' => 'MauticReportBundle:Report:checkCampaignReportStatus'
             ],
         ]

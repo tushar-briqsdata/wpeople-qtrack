@@ -113,6 +113,26 @@ class Report extends FormEntity implements SchedulerInterface
      * @var null|string
      */
     private $scheduleMonthFrequency;
+    
+    /**
+     * @var null|string
+     */
+    private $status;
+    
+    /**
+     * @var null|string
+     */
+    private $s3Path;
+    
+    /**
+     * @var null|int
+     */
+    private $campaignId;
+    
+    /**
+     * @var null|string
+     */
+    private $type;
 
     public function __clone()
     {
@@ -177,6 +197,10 @@ class Report extends FormEntity implements SchedulerInterface
         $builder->addNullableField('toAddress', Type::STRING, 'to_address');
         $builder->addNullableField('scheduleDay', Type::STRING, 'schedule_day');
         $builder->addNullableField('scheduleMonthFrequency', Type::STRING, 'schedule_month_frequency');
+        $builder->addNullableField('status', Type::STRING, 'status');
+        $builder->addNullableField('s3Path', Type::STRING, 's3_path');
+        $builder->addNullableField('campaignId', Type::INTEGER, 'campaign_id');
+        $builder->addNullableField('type', Type::STRING, 'type');
     }
 
     /**

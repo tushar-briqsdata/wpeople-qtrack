@@ -902,7 +902,7 @@ class ReportController extends FormController
         $em = $this->container->get('doctrine.orm.entity_manager');
         $q = $em->getConnection()->createQueryBuilder();
         
-        $q->insert(MAUTIC_TABLE_PREFIX.'reports')->values(['is_published' => '?', 'date_added' => '?', 'created_by' => '?','created_by_user' => '?','name' => '?','is_scheduled' => '?','status'=>'?','s3_path'=>'?','campaign_id'=>'?'])->setParameter(0, $insert_report_data['is_published'])->setParameter(1, $insert_report_data['date_added'])->setParameter(2, $insert_report_data['created_by'])->setParameter(3, $insert_report_data['created_by_user'])->setParameter(4, $insert_report_data['name'])->setParameter(5, $insert_report_data['is_scheduled'])->setParameter(6, $insert_report_data['status'])->setParameter(7, $insert_report_data['s3_path'])->setParameter(8, $insert_report_data['campaign_id']);
+        $q->insert(MAUTIC_TABLE_PREFIX.'reports')->values(['is_published' => '?', 'date_added' => '?', 'created_by' => '?','created_by_user' => '?','name' => '?','is_scheduled' => '?','status'=>'?','s3_path'=>'?','campaign_id'=>'?','type'=>'?'])->setParameter(0, $insert_report_data['is_published'])->setParameter(1, $insert_report_data['date_added'])->setParameter(2, $insert_report_data['created_by'])->setParameter(3, $insert_report_data['created_by_user'])->setParameter(4, $insert_report_data['name'])->setParameter(5, $insert_report_data['is_scheduled'])->setParameter(6, $insert_report_data['status'])->setParameter(7, $insert_report_data['s3_path'])->setParameter(8, $insert_report_data['campaign_id'])->setParameter(9, $insert_report_data['type']);
 
         $q->execute();
         $last_inserted_id = $em->getConnection()->lastInsertId();
@@ -910,14 +910,14 @@ class ReportController extends FormController
         return $return_data;
     }
 
-    public function checkCampaignReportStatusAction($campaignId){
+    public function checkCampaignReportStatusAction($type,$campaignId){
         
         $return_data = [];
         $s3_path;
         $em = $this->container->get('doctrine.orm.entity_manager');
 
-        $query = $em->createQuery("SELECT * FROM reports re where campaign_id='".$campaignId."' order by id desc limit 1");
-        $report_campaign = $query->getResult();
+        $query = $em->createQuery("SELECT re FROM Mautic\ReportBundle\Entity\Report re where re.campaignId=".$campaignId." AND re.type = '".$type."' order by re.id desc");
+        $report_campaign = $query->getArrayResult();
         
         if(count($report_campaign) > 0){
             $result = $report_campaign;
@@ -925,10 +925,11 @@ class ReportController extends FormController
             $result = [];
         }
 
-        return $result;
+        echo json_encode($result);exit;
     }
-    public function summaryReportAction($campaignId){
+    public function summaryReportAction($type,$campaignId){
         //echo 'dsadasdas';exit;
+        
         $em = $this->container->get('doctrine.orm.entity_manager');
         
         $insert_report_data = ['is_published'=>1,
@@ -939,14 +940,16 @@ class ReportController extends FormController
                                'is_scheduled'=>1,
                                'status'=>'In-Progress',
                                's3_path'=>'',
-                               'campaign_id' => $campaignId
+                               'campaign_id' => $campaignId,
+                               'type'=>$type
                             ];
         $db_insert_report_data = $this->insertReportSummaryData($insert_report_data);
 
         $summary_report_data = ['compaign_id'=>$campaignId,'report_id'=>$db_insert_report_data['last_inserted_id']];
         $silverpop_summary_report = $this->lamdaApiSummaryReport($summary_report_data);
 
-        return $silverpop_summary_report;
+        echo json_encode($silverpop_summary_report);exit;
+        
         /*$EMAIL_STATS = "SELECT e.id as email_id, e.name as email_name, e.subject, es.email_address, es.date_sent, c.name as campaign_name, es.open_count, es.lead_id FROM "
                 . "email_stats es "
                 . "INNER JOIN emails e ON e.id = es.email_id "
