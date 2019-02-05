@@ -916,7 +916,7 @@ class ReportController extends FormController
         $s3_path;
         $em = $this->container->get('doctrine.orm.entity_manager');
 
-        $query = $em->createQuery("SELECT re FROM Mautic\ReportBundle\Entity\Report re where re.campaignId=".$campaignId." AND re.type = '".$type."' order by re.id desc");
+        $query = $em->createQuery("SELECT re FROM Mautic\ReportBundle\Entity\Report re where re.campaignId=".$campaignId." AND re.type = '".$type."' order by re.id desc")->setMaxResults(1);
         $report_campaign = $query->getArrayResult();
         
         if(count($report_campaign) > 0){
