@@ -858,10 +858,17 @@ class ReportController extends FormController
             ];
             /*echo 'inputuser_receipt_data';
                 print_r($user_receipt_data);                                    */
-            $res = $this->client->request('POST', $this->aws_api_url.'reports/summary-report', [
-                'headers' => ['Content-Type' => 'application/json'],
-                'body' => json_encode($user_summary_report_data)
-            ]);
+            if($summary_report_data["type"] == "summary"){
+                $res = $this->client->request('POST', $this->aws_api_url.'reports/summary-report', [
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'body' => json_encode($user_summary_report_data)
+                ]);
+            } else {
+                $res = $this->client->request('POST', $this->aws_api_url.'reports/raw-mailing-report', [
+                    'headers' => ['Content-Type' => 'application/json'],
+                    'body' => json_encode($user_summary_report_data)
+                ]);
+            }
 
             $res->getHeader('content-type');
             $ress_body = json_decode($res->getBody(),true);
@@ -945,7 +952,7 @@ class ReportController extends FormController
                             ];
         $db_insert_report_data = $this->insertReportSummaryData($insert_report_data);
 
-        $summary_report_data = ['compaign_id'=>$campaignId,'report_id'=>$db_insert_report_data['last_inserted_id']];
+        $summary_report_data = ['compaign_id'=>$campaignId,'report_id'=>$db_insert_report_data['last_inserted_id'], "type"=>$type];
         $silverpop_summary_report = $this->lamdaApiSummaryReport($summary_report_data);
 
         echo json_encode($silverpop_summary_report);exit;
