@@ -860,7 +860,7 @@ class ReportController extends FormController
                 print_r($user_receipt_data);                                    */
             $res = $this->client->request('POST', $this->aws_api_url.'reports/summary-report', [
                 'headers' => ['Content-Type' => 'application/json'],
-                'body' => json_encode($user_receipt_data)
+                'body' => json_encode($user_summary_report_data)
             ]);
 
             $res->getHeader('content-type');
