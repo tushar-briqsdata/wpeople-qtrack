@@ -937,11 +937,13 @@ class ReportController extends FormController
     public function summaryReportAction($type,$campaignId){
         //echo 'dsadasdas';exit;
         
+        $session     = $this->factory->getSession();
+        
         $em = $this->container->get('doctrine.orm.entity_manager');
         
         $insert_report_data = ['is_published'=>1,
                                'date_added'=>date("Y-m-d H:i:s"),
-                               'created_by'=>'',
+                               'created_by'=>$session->get('mautic.user'),
                                'created_by_user'=>'',
                                'name'=>'Summary Report-'.date("Y-m-d H:i:s"),
                                'is_scheduled'=>1,
