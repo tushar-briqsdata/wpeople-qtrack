@@ -846,15 +846,15 @@ class ReportController extends FormController
     }
     
     public function lamdaApiSummaryReport($summary_report_data = array()){
-
         $return_data = [];
         try {
-            $campain_id = $summary_report_data['campain_id'];
+            $campain_id = $summary_report_data['compaign_id'];
             //$user_email = 'harshshah1020120120@qdata.io';
             $user_summary_report_data = ['dbConfig'=>
                 $this->dbconfig,
                 'campaignId' => $campain_id,
-                'Bucket' => 'bancolombia-files'
+                'Bucket' => 'bancolombia-files',
+                'report_id' => $summary_report_data['report_id']
             ];
             /*echo 'inputuser_receipt_data';
                 print_r($user_receipt_data);                                    */
@@ -936,7 +936,6 @@ class ReportController extends FormController
     }
     public function summaryReportAction($type,$campaignId){
         //echo 'dsadasdas';exit;
-        
         $session     = $this->factory->getSession();
         
         $em = $this->container->get('doctrine.orm.entity_manager');
