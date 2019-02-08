@@ -164,7 +164,7 @@ class EmailSubscriber extends CommonSubscriber {
                                      'eventDateStart' => $current_date_time
                                     ];
                 //echo '<pre>';print_r($export_raw_data);
-                $resp_export_raw_data = $this->lamdaApiUserExportRawData($export_raw_data);
+                //$resp_export_raw_data = $this->lamdaApiUserExportRawData($export_raw_data);
                 //echo '<pre>';print_r($resp_export_raw_data);exit;
                 //echo 'data inserted';exit;
                 //$mail->send();
