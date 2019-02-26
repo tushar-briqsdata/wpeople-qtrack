@@ -109,15 +109,15 @@ class CampaignSubscriber extends CommonSubscriber
     public function onCampaignBuild(Events\CampaignBuilderEvent $event)
     {
         //Add action to actually add/remove lead to a specific lists
-        // $addRemoveLeadAction = [
-        //     'label'           => 'mautic.campaign.event.addremovelead',
-        //     'description'     => 'mautic.campaign.event.addremovelead_descr',
-        //     'formType'        => 'campaignevent_addremovelead',
-        //     'formTypeOptions' => [
-        //         'include_this' => true,
-        //     ],
-        //     'callback' => '\Mautic\CampaignBundle\Helper\CampaignEventHelper::addRemoveLead',
-        // ];
-        // $event->addAction('campaign.addremovelead', $addRemoveLeadAction);
+        $addRemoveLeadAction = [
+            'label'           => 'mautic.campaign.event.addremovelead',
+            'description'     => 'mautic.campaign.event.addremovelead_descr',
+            'formType'        => 'campaignevent_addremovelead',
+            'formTypeOptions' => [
+                'include_this' => true,
+            ],
+            'callback' => '\Mautic\CampaignBundle\Helper\CampaignEventHelper::addRemoveLead',
+        ];
+        $event->addAction('campaign.addremovelead', $addRemoveLeadAction);
     }
 }

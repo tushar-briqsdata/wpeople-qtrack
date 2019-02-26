@@ -102,130 +102,130 @@ class CampaignSubscriber extends CommonSubscriber
     public function onCampaignBuild(CampaignBuilderEvent $event)
     {
         //Add actions
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.changepoints',
-        //     'description' => 'mautic.lead.lead.events.changepoints_descr',
-        //     'formType'    => 'leadpoints_action',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction('lead.changepoints', $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.changepoints',
+            'description' => 'mautic.lead.lead.events.changepoints_descr',
+            'formType'    => 'leadpoints_action',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction('lead.changepoints', $action);
 
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.changelist',
-        //     'description' => 'mautic.lead.lead.events.changelist_descr',
-        //     'formType'    => 'leadlist_action',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction('lead.changelist', $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.changelist',
+            'description' => 'mautic.lead.lead.events.changelist_descr',
+            'formType'    => 'leadlist_action',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction('lead.changelist', $action);
 
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.updatelead',
-        //     'description' => 'mautic.lead.lead.events.updatelead_descr',
-        //     'formType'    => 'updatelead_action',
-        //     'formTheme'   => 'MauticLeadBundle:FormTheme\ActionUpdateLead',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction('lead.updatelead', $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.updatelead',
+            'description' => 'mautic.lead.lead.events.updatelead_descr',
+            'formType'    => 'updatelead_action',
+            'formTheme'   => 'MauticLeadBundle:FormTheme\ActionUpdateLead',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction('lead.updatelead', $action);
 
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.changetags',
-        //     'description' => 'mautic.lead.lead.events.changetags_descr',
-        //     'formType'    => 'modify_lead_tags',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction('lead.changetags', $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.changetags',
+            'description' => 'mautic.lead.lead.events.changetags_descr',
+            'formType'    => 'modify_lead_tags',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction('lead.changetags', $action);
 
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.addtocompany',
-        //     'description' => 'mautic.lead.lead.events.addtocompany_descr',
-        //     'formType'    => 'addtocompany_action',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction('lead.addtocompany', $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.addtocompany',
+            'description' => 'mautic.lead.lead.events.addtocompany_descr',
+            'formType'    => 'addtocompany_action',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction('lead.addtocompany', $action);
 
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.changeowner',
-        //     'description' => 'mautic.lead.lead.events.changeowner_descr',
-        //     'formType'    => ChangeOwnerType::class,
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction(self::ACTION_LEAD_CHANGE_OWNER, $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.changeowner',
+            'description' => 'mautic.lead.lead.events.changeowner_descr',
+            'formType'    => ChangeOwnerType::class,
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction(self::ACTION_LEAD_CHANGE_OWNER, $action);
 
-        // $action = [
-        //     'label'       => 'mautic.lead.lead.events.changecompanyscore',
-        //     'description' => 'mautic.lead.lead.events.changecompanyscore_descr',
-        //     'formType'    => 'scorecontactscompanies_action',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        // ];
-        // $event->addAction('lead.scorecontactscompanies', $action);
+        $action = [
+            'label'       => 'mautic.lead.lead.events.changecompanyscore',
+            'description' => 'mautic.lead.lead.events.changecompanyscore_descr',
+            'formType'    => 'scorecontactscompanies_action',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+        ];
+        $event->addAction('lead.scorecontactscompanies', $action);
 
-        // $trigger = [
-        //     'label'                  => 'mautic.lead.lead.events.delete',
-        //     'description'            => 'mautic.lead.lead.events.delete_descr',
-        //     'eventName'              => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        //     'connectionRestrictions' => [
-        //         'target' => [
-        //             'decision'  => ['none'],
-        //             'action'    => ['none'],
-        //             'condition' => ['none'],
-        //         ],
-        //     ],
-        // ];
-        // $event->addAction('lead.deletecontact', $trigger);
+        $trigger = [
+            'label'                  => 'mautic.lead.lead.events.delete',
+            'description'            => 'mautic.lead.lead.events.delete_descr',
+            'eventName'              => LeadEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+            'connectionRestrictions' => [
+                'target' => [
+                    'decision'  => ['none'],
+                    'action'    => ['none'],
+                    'condition' => ['none'],
+                ],
+            ],
+        ];
+        $event->addAction('lead.deletecontact', $trigger);
 
-        // $trigger = [
-        //     'label'       => 'mautic.lead.lead.events.field_value',
-        //     'description' => 'mautic.lead.lead.events.field_value_descr',
-        //     'formType'    => 'campaignevent_lead_field_value',
-        //     'formTheme'   => 'MauticLeadBundle:FormTheme\FieldValueCondition',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        // ];
-        // $event->addCondition('lead.field_value', $trigger);
+        $trigger = [
+            'label'       => 'mautic.lead.lead.events.field_value',
+            'description' => 'mautic.lead.lead.events.field_value_descr',
+            'formType'    => 'campaignevent_lead_field_value',
+            'formTheme'   => 'MauticLeadBundle:FormTheme\FieldValueCondition',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        ];
+        $event->addCondition('lead.field_value', $trigger);
 
-        // $trigger = [
-        //     'label'       => 'mautic.lead.lead.events.device',
-        //     'description' => 'mautic.lead.lead.events.device_descr',
-        //     'formType'    => 'campaignevent_lead_device',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        // ];
+        $trigger = [
+            'label'       => 'mautic.lead.lead.events.device',
+            'description' => 'mautic.lead.lead.events.device_descr',
+            'formType'    => 'campaignevent_lead_device',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        ];
 
-        // $event->addCondition('lead.device', $trigger);
+        $event->addCondition('lead.device', $trigger);
 
-        // $trigger = [
-        //     'label'       => 'mautic.lead.lead.events.tags',
-        //     'description' => 'mautic.lead.lead.events.tags_descr',
-        //     'formType'    => 'campaignevent_lead_tags',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        // ];
-        // $event->addCondition('lead.tags', $trigger);
+        $trigger = [
+            'label'       => 'mautic.lead.lead.events.tags',
+            'description' => 'mautic.lead.lead.events.tags_descr',
+            'formType'    => 'campaignevent_lead_tags',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        ];
+        $event->addCondition('lead.tags', $trigger);
 
-        // $trigger = [
-        //     'label'       => 'mautic.lead.lead.events.segments',
-        //     'description' => 'mautic.lead.lead.events.segments_descr',
-        //     'formType'    => 'campaignevent_lead_segments',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        // ];
+        $trigger = [
+            'label'       => 'mautic.lead.lead.events.segments',
+            'description' => 'mautic.lead.lead.events.segments_descr',
+            'formType'    => 'campaignevent_lead_segments',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        ];
 
-        // $event->addCondition('lead.segments', $trigger);
+        $event->addCondition('lead.segments', $trigger);
 
-        // $trigger = [
-        //     'label'       => 'mautic.lead.lead.events.owner',
-        //     'description' => 'mautic.lead.lead.events.owner_descr',
-        //     'formType'    => 'campaignevent_lead_owner',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        // ];
+        $trigger = [
+            'label'       => 'mautic.lead.lead.events.owner',
+            'description' => 'mautic.lead.lead.events.owner_descr',
+            'formType'    => 'campaignevent_lead_owner',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        ];
 
-        // $event->addCondition('lead.owner', $trigger);
+        $event->addCondition('lead.owner', $trigger);
 
-        // $trigger = [
-        //     'label'       => 'mautic.lead.lead.events.campaigns',
-        //     'description' => 'mautic.lead.lead.events.campaigns_descr',
-        //     'formType'    => 'campaignevent_lead_campaigns',
-        //     'formTheme'   => 'MauticLeadBundle:FormTheme\ContactCampaignsCondition',
-        //     'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
-        // ];
+        $trigger = [
+            'label'       => 'mautic.lead.lead.events.campaigns',
+            'description' => 'mautic.lead.lead.events.campaigns_descr',
+            'formType'    => 'campaignevent_lead_campaigns',
+            'formTheme'   => 'MauticLeadBundle:FormTheme\ContactCampaignsCondition',
+            'eventName'   => LeadEvents::ON_CAMPAIGN_TRIGGER_CONDITION,
+        ];
 
-        // $event->addCondition('lead.campaigns', $trigger);
+        $event->addCondition('lead.campaigns', $trigger);
     }
 
     /**

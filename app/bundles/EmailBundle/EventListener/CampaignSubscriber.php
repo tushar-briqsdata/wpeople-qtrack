@@ -164,19 +164,19 @@ class CampaignSubscriber extends CommonSubscriber
                 ]
             );
 
-        // $event->addAction(
-        //     'email.send.to.user',
-        //     [
-        //         'label'           => 'mautic.email.campaign.event.send.to.user',
-        //         'description'     => 'mautic.email.campaign.event.send.to.user_descr',
-        //         'eventName'       => EmailEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        //         'formType'        => 'email_to_user',
-        //         'formTypeOptions' => ['update_select' => 'campaignevent_properties_useremail_email'],
-        //         'formTheme'       => 'MauticEmailBundle:FormTheme\EmailSendList',
-        //         'channel'         => 'email',
-        //         'channelIdField'  => 'email',
-        //     ]
-        // );
+        $event->addAction(
+            'email.send.to.user',
+            [
+                'label'           => 'mautic.email.campaign.event.send.to.user',
+                'description'     => 'mautic.email.campaign.event.send.to.user_descr',
+                'eventName'       => EmailEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+                'formType'        => 'email_to_user',
+                'formTypeOptions' => ['update_select' => 'campaignevent_properties_useremail_email'],
+                'formTheme'       => 'MauticEmailBundle:FormTheme\EmailSendList',
+                'channel'         => 'email',
+                'channelIdField'  => 'email',
+            ]
+        );
     }
 
     /**
