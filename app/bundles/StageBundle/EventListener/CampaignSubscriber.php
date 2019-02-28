@@ -63,14 +63,14 @@ class CampaignSubscriber extends CommonSubscriber
      */
     public function onCampaignBuild(CampaignBuilderEvent $event)
     {
-        // $action = [
-        //     'label'       => 'mautic.stage.campaign.event.change',
-        //     'description' => 'mautic.stage.campaign.event.change_descr',
-        //     'eventName'   => StageEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        //     'formType'    => 'stageaction_change',
-        //     'formTheme'   => 'MauticStageBundle:FormTheme\StageActionChange',
-        // ];
-        // $event->addAction('stage.change', $action);
+        $action = [
+            'label'       => 'mautic.stage.campaign.event.change',
+            'description' => 'mautic.stage.campaign.event.change_descr',
+            'eventName'   => StageEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+            'formType'    => 'stageaction_change',
+            'formTheme'   => 'MauticStageBundle:FormTheme\StageActionChange',
+        ];
+        $event->addAction('stage.change', $action);
     }
 
     /**

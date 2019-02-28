@@ -84,25 +84,25 @@ class CampaignSubscriber extends CommonSubscriber
             }
         }
 
-        // $action = [
-        //     'label'                  => 'mautic.channel.message.send.marketing.message',
-        //     'description'            => 'mautic.channel.message.send.marketing.message.descr',
-        //     'eventName'              => ChannelEvents::ON_CAMPAIGN_TRIGGER_ACTION,
-        //     'formType'               => 'message_send',
-        //     'formTheme'              => 'MauticChannelBundle:FormTheme\MessageSend',
-        //     'channel'                => 'channel.message',
-        //     'channelIdField'         => 'marketingMessage',
-        //     'connectionRestrictions' => [
-        //         'target' => [
-        //             'decision' => $decisions,
-        //         ],
-        //     ],
-        //     'timelineTemplate'     => 'MauticChannelBundle:SubscribedEvents\Timeline:index.html.php',
-        //     'timelineTemplateVars' => [
-        //         'messageSettings' => $channels,
-        //     ],
-        // ];
-        // $event->addAction('message.send', $action);
+        $action = [
+            'label'                  => 'mautic.channel.message.send.marketing.message',
+            'description'            => 'mautic.channel.message.send.marketing.message.descr',
+            'eventName'              => ChannelEvents::ON_CAMPAIGN_TRIGGER_ACTION,
+            'formType'               => 'message_send',
+            'formTheme'              => 'MauticChannelBundle:FormTheme\MessageSend',
+            'channel'                => 'channel.message',
+            'channelIdField'         => 'marketingMessage',
+            'connectionRestrictions' => [
+                'target' => [
+                    'decision' => $decisions,
+                ],
+            ],
+            'timelineTemplate'     => 'MauticChannelBundle:SubscribedEvents\Timeline:index.html.php',
+            'timelineTemplateVars' => [
+                'messageSettings' => $channels,
+            ],
+        ];
+        $event->addAction('message.send', $action);
     }
 
     /**

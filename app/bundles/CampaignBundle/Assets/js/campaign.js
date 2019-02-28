@@ -433,8 +433,8 @@ Mautic.campaignBuilderConnectionsMap = {
             // target
             'source': [],
             'action': ['top'], // target anchors
-            'condition': [],
-            'decision': [],
+            'condition': ['top'],
+            'decision': ['top'],
         },
         'leadsourceleft': {
             'source': ['leadsourceright'],

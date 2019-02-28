@@ -95,19 +95,19 @@ class CampaignSubscriber extends CommonSubscriber
             ]
         );
 
-        // $event->addDecision(
-        //     'dwc.decision',
-        //     [
-        //         'label'           => 'mautic.dynamicContent.campaign.decision_dwc',
-        //         'description'     => 'mautic.dynamicContent.campaign.decision_dwc.tooltip',
-        //         'eventName'       => DynamicContentEvents::ON_CAMPAIGN_TRIGGER_DECISION,
-        //         'formType'        => 'dwcdecision_list',
-        //         'formTypeOptions' => ['update_select' => 'campaignevent_properties_dynamicContent'],
-        //         'formTheme'       => 'MauticDynamicContentBundle:FormTheme\DynamicContentDecisionList',
-        //         'channel'         => 'dynamicContent',
-        //         'channelIdField'  => 'dynamicContent',
-        //     ]
-        // );
+        $event->addDecision(
+            'dwc.decision',
+            [
+                'label'           => 'mautic.dynamicContent.campaign.decision_dwc',
+                'description'     => 'mautic.dynamicContent.campaign.decision_dwc.tooltip',
+                'eventName'       => DynamicContentEvents::ON_CAMPAIGN_TRIGGER_DECISION,
+                'formType'        => 'dwcdecision_list',
+                'formTypeOptions' => ['update_select' => 'campaignevent_properties_dynamicContent'],
+                'formTheme'       => 'MauticDynamicContentBundle:FormTheme\DynamicContentDecisionList',
+                'channel'         => 'dynamicContent',
+                'channelIdField'  => 'dynamicContent',
+            ]
+        );
     }
 
     /**

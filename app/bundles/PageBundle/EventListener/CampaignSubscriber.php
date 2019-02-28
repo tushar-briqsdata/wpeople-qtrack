@@ -88,26 +88,26 @@ class CampaignSubscriber extends CommonSubscriber
     public function onCampaignBuild(CampaignBuilderEvent $event)
     {
         //Add trigger
-        // $pageHitTrigger = [
-        //     'label'          => 'mautic.page.campaign.event.pagehit',
-        //     'description'    => 'mautic.page.campaign.event.pagehit_descr',
-        //     'formType'       => 'campaignevent_pagehit',
-        //     'eventName'      => PageEvents::ON_CAMPAIGN_TRIGGER_DECISION,
-        //     'channel'        => 'page',
-        //     'channelIdField' => 'pages',
-        // ];
-        // $event->addDecision('page.pagehit', $pageHitTrigger);
+        $pageHitTrigger = [
+            'label'          => 'mautic.page.campaign.event.pagehit',
+            'description'    => 'mautic.page.campaign.event.pagehit_descr',
+            'formType'       => 'campaignevent_pagehit',
+            'eventName'      => PageEvents::ON_CAMPAIGN_TRIGGER_DECISION,
+            'channel'        => 'page',
+            'channelIdField' => 'pages',
+        ];
+        $event->addDecision('page.pagehit', $pageHitTrigger);
 
         //Add trigger
-        // $deviceHitTrigger = [
-        //     'label'          => 'mautic.page.campaign.event.devicehit',
-        //     'description'    => 'mautic.page.campaign.event.devicehit_descr',
-        //     'formType'       => 'Mautic\LeadBundle\Form\Type\CampaignEventLeadDeviceType',
-        //     'eventName'      => PageEvents::ON_CAMPAIGN_TRIGGER_DECISION,
-        //     'channel'        => 'page',
-        //     'channelIdField' => 'pages',
-        // ];
-        // $event->addDecision('page.devicehit', $deviceHitTrigger);
+        $deviceHitTrigger = [
+            'label'          => 'mautic.page.campaign.event.devicehit',
+            'description'    => 'mautic.page.campaign.event.devicehit_descr',
+            'formType'       => 'Mautic\LeadBundle\Form\Type\CampaignEventLeadDeviceType',
+            'eventName'      => PageEvents::ON_CAMPAIGN_TRIGGER_DECISION,
+            'channel'        => 'page',
+            'channelIdField' => 'pages',
+        ];
+        $event->addDecision('page.devicehit', $deviceHitTrigger);
 
         $trackingServices = $this->trackingHelper->getEnabledServices();
         if (!empty($trackingServices)) {
